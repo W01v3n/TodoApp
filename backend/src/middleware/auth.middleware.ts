@@ -41,7 +41,18 @@ export default function authMiddleware(
       token,
       jwtSecret ?? ""
     ) as unknown as DecodedToken;
-    req.userId = decoded.userId;
+
+    if (typeof decoded !== "string" && decoded !== null) {
+      console.log("Verified token:", token);
+      console.log("Verified token expiration:", decoded.exp);
+    }
+    if (decoded.userId) {
+      req.userId = Number(decoded.userId);
+      console.log("Token verified! User ID:", req.userId);
+    } else {
+      console.log("Couldn't fetch user ID from token.");
+      console.log(decoded);
+    }
     next();
   } catch (error) {
     console.log(error);

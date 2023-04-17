@@ -1,5 +1,5 @@
 import { Request } from "express";
 
-type AuthRequest = Request & { userId?: string };
+type AuthRequest = Request & { userId?: number };
 
 export default AuthRequest;

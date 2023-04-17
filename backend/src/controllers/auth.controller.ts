@@ -43,29 +43,33 @@ export async function userLogin(
   res: Response,
   next: NextFunction
 ): Promise<void> {
+  // Authenticate a user upon login
   const { email, password } = req.body;
 
   try {
-    // TODOS
     // Get the user's data from the database, create a function in the repository called getUserByEmail.
     const user = await getUserByEmail(email);
     // Check to see that the data was received (true/false) and that the password is correct.
     if (user && (await verifyPassword(password, user.password_hash))) {
       // If everything checks out (logged in successfully), create a token.
+      console.log(`USER ID: ${user.id}`);
+
       const token = jwt.sign(
-        { id: user.id },
+        { userId: user.id },
         process.env.JWT_SECRET as string,
         {
           expiresIn: "1h",
         }
       );
 
+      console.log(token);
+
       // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
       res.cookie("token", token, {
         httpOnly: true,
         maxAge: 60 * 60 * 1000, // Set the cookie expiration to match the JWT expiration (1 hour)
         secure: process.env.NODE_ENV === "production", // Set the secure flag in production environment
-        sameSite: "strict", // Set the sameSite attribute to prevent CSRF attacks
+        sameSite: "strict", // Set the sameSite attribute to prevent CSRF attacks,
       });
 
       res

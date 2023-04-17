@@ -54,11 +54,13 @@ export async function userLogin(
       // If everything checks out (logged in successfully), create a token.
       console.log(`USER ID: ${user.id}`);
 
+      const tokenExpirationTime = Math.floor(Date.now() / 1000) + 60 * 60; // Expires in 1 hour
+
       const token = jwt.sign(
         { userId: user.id },
         process.env.JWT_SECRET as string,
         {
-          expiresIn: "1h",
+          expiresIn: tokenExpirationTime,
         }
       );
 

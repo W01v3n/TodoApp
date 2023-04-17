@@ -1,9 +1,9 @@
 export default interface ITodoItem {
   id?: number;
   title: string;
-  description?: string;
-  completed: boolean;
+  content?: string;
+  completed?: boolean;
   listId: number;
-  createdAt: Date;
+  createdAt?: Date;
   updatedAt: Date;
 }

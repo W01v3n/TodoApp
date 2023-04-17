@@ -39,3 +39,37 @@ export async function createList(
     return null;
   }
 }
+
+// Function to find all todo lists with the same user id
+export async function findListsByUserId(
+  userId: number
+): Promise<ITodoList[] | null> {
+  // Return all todo lists with the same user id
+  // If no lists are found, return null
+
+  const query = "SELECT * FROM todo_lists WHERE user_id = ?";
+  const queryParams = [userId];
+
+  try {
+    const [result] = await pool.query<RowDataPacket[]>(query, queryParams);
+
+    if (result.length) {
+      const lists: ITodoList[] = result.map((list) => {
+        return {
+          id: list.id,
+          name: list.name,
+          userId: list.user_id,
+          createdAt: list.created_at,
+          updatedAt: list.updated_at,
+        };
+      });
+
+      return lists;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error finding todo lists:", error);
+    return null;
+  }
+}

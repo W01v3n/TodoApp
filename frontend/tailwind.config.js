@@ -5,6 +5,9 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      "hero-font": [["\-apple-system", "Helvetica Neue", "Open Sans"],]
+    },
     extend: {},
   },
   plugins: [],

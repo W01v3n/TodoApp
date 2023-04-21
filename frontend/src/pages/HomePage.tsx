@@ -1,3 +1,11 @@
-export function HomePage() {
-  return <h1>Home</h1>;
+import HeroSection from "./Sections/HeroSection";
+
+function HomePage() {
+  return (
+    <div className="home-page">
+      <HeroSection />
+    </div>
+  );
 }
+
+export default HomePage;

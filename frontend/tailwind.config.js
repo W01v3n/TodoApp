@@ -8,7 +8,11 @@ export default {
     fontFamily: {
       "hero-font": [["\-apple-system", "Helvetica Neue", "Open Sans"],]
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "hero-pattern": "url('./src/assets/background-images/green-dust-and-scratches.png')"
+      }
+    },
   },
   plugins: [],
 }

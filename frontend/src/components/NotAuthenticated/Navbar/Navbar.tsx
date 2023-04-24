@@ -4,10 +4,10 @@ import NavLink from "./NavLink";
 
 function Navbar() {
   return (
-    <nav className="bg-gradient-to-r from-blue-500  to-purple-600 px-4 py-2 shadow-md">
+    <nav className="bg-stone-100 bg-hero-pattern px-4 py-2 shadow-md">
       <div className="container mx-auto">
         <div className="flex items-center justify-between">
-          <div className="text-xl font-bold text-white">
+          <div className="text-xl font-bold text-black">
             <Link to="/">
               <img src={logo} alt="Logo" />
             </Link>

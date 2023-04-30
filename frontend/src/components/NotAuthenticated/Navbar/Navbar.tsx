@@ -16,7 +16,7 @@ function Navbar() {
           </div>
           <button
             id="hamburger"
-            className="absolute right-2 p-2 focus:outline-none lg:hidden"
+            className="absolute right-2 p-2 focus:outline-none md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <span className="mb-1 block h-1 w-6 bg-black"></span>
@@ -28,8 +28,8 @@ function Navbar() {
               className={`${
                 isMenuOpen
                   ? "translate-y-2 opacity-100 transition-all duration-500 ease-in-out" //hidden class is not animatable.
-                  : "translate-y-0 opacity-0 md:flex md:scale-100 md:transform-none md:space-x-4 md:opacity-100"
-              } absolute right-0 top-3 max-h-[10rem] flex-col py-2 md:static md:flex-row md:space-x-4 md:py-0`}
+                  : "translate-y-0 opacity-0 transition-all duration-500 ease-in-out md:flex md:scale-100 md:transform-none md:space-x-4 md:opacity-100"
+              } absolute right-0 top-3 flex-col py-2 md:static md:flex-row md:space-x-4 md:py-0`}
             >
               <NavLink to="/" label="Home" />
               <NavLink to="/login" label="Login" />

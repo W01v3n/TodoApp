@@ -27,9 +27,9 @@ function Navbar() {
             <ul
               className={`${
                 isMenuOpen
-                  ? "absolute right-0 top-3 max-h-[10rem] flex-col py-2 transition-all duration-500 ease-in md:static md:flex md:space-x-4 md:py-0"
-                  : "hidden md:flex md:space-x-4"
-              } `}
+                  ? "translate-y-2 opacity-100 transition-all duration-500 ease-in-out" //hidden class is not animatable.
+                  : "translate-y-0 opacity-0 md:flex md:scale-100 md:transform-none md:space-x-4 md:opacity-100"
+              } absolute right-0 top-3 max-h-[10rem] flex-col py-2 md:static md:flex-row md:space-x-4 md:py-0`}
             >
               <NavLink to="/" label="Home" />
               <NavLink to="/login" label="Login" />

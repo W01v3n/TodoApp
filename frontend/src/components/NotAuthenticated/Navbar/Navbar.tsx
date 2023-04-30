@@ -16,7 +16,7 @@ function Navbar() {
           </div>
           <button
             id="hamburger"
-            className="p-2 focus:outline-none lg:hidden"
+            className="absolute right-2 p-2 focus:outline-none lg:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <span className="mb-1 block h-1 w-6 bg-black"></span>
@@ -26,8 +26,10 @@ function Navbar() {
           <div className="relative">
             <ul
               className={`${
-                isMenuOpen ? "max-h-[10rem]" : "max-h-0"
-              } md:max-h-auto absolute left-0 top-12 origin-top transform flex-col space-y-4 overflow-hidden transition-all duration-300 ease-in-out md:static md:flex md:transform-none md:space-x-4 md:space-y-0`}
+                isMenuOpen
+                  ? "absolute right-0 top-3 max-h-[10rem] flex-col py-2 transition-all duration-500 ease-in md:static md:flex md:space-x-4 md:py-0"
+                  : "hidden md:flex md:space-x-4"
+              } `}
             >
               <NavLink to="/" label="Home" />
               <NavLink to="/login" label="Login" />

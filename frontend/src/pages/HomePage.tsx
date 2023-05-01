@@ -3,7 +3,7 @@ import HeroSection from "./Home/Sections/HeroSection";
 
 function HomePage() {
   return (
-    <div className="home-page">
+    <div className="home-page grid grid-cols-1 md:grid-cols-12">
       <HeroSection />
       <FeatureSection />
     </div>

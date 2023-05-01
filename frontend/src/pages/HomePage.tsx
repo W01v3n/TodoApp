@@ -1,5 +1,5 @@
-import FeatureSection from "./Sections/Home/FeatureSection";
-import HeroSection from "./Sections/Home/HeroSection";
+import FeatureSection from "./Home/Sections/FeatureSection";
+import HeroSection from "./Home/Sections/HeroSection";
 
 function HomePage() {
   return (

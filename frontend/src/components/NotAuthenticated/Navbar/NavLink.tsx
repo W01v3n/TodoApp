@@ -10,7 +10,7 @@ function NavLink({ to, label }: NavLinkProps) {
     <li>
       <Link
         to={to}
-        className="text-gray-900 transition-colors duration-300 hover:text-gray-500"
+        className="text-gray-900 duration-500 hover:border-y hover:border-slate-950"
       >
         {label}
       </Link>

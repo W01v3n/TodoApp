@@ -19,9 +19,14 @@ function HeroSection() {
         <h1 className="text-5xl font-extralight tracking-wide md:col-span-3 md:text-7xl md:font-thin">
           {getTimeOfDay()}
         </h1>
-        <p className="text-lg font-light md:col-span-3 md:row-span-1 md:pl-80">
-          I am THYNKSO. A simple todo app.
-        </p>
+        <div className="md:col-span-3 md:row-span-1 md:pr-40 md:pt-2">
+          <p className="text-lg font-light md:ml-96">
+            Hello! I am THYNKSO. A simple todo app.
+          </p>
+          <p className="text-lg font-light md:ml-96 md:pl-28">
+            You might be wondering what I can do, just look down.
+          </p>
+        </div>
       </div>
     </section>
   );

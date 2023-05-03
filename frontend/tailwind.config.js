@@ -5,13 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    fontFamily: {
-      "hero-font": [["\-apple-system", "Helvetica Neue", "Open Sans"],]
-    },
     extend: {
       backgroundImage: {
         "hero-pattern": "url('./src/assets/background-images/green-dust-and-scratches.png')"
-      }
+      },
+      fontFamily: {
+        "hero": ['"-apple-system"', '"Helvetica Neue"', '"Open Sans"', '"sans-serif"'],
+        "feature": ['"Open Sans"', "Dosis", '"sans-serif"']
+      },
     },
   },
   plugins: [],

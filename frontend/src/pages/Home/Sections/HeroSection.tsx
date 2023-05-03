@@ -15,12 +15,12 @@ function getTimeOfDay(): string | number {
 function HeroSection() {
   return (
     <section className="hero-section overflow-hidden text-zinc-700 sm:py-40 md:col-span-full">
-      <div className="container grid grid-cols-1 space-y-4 py-8 text-center font-thin md:grid-cols-4 md:grid-rows-6 md:py-2">
+      <div className="container grid grid-cols-1 space-y-4 py-8 text-center font-thin md:grid-cols-4 md:grid-rows-2 md:py-2">
         <h1 className="text-5xl font-extralight tracking-wide md:col-span-3 md:text-7xl md:font-thin">
           {getTimeOfDay()}
         </h1>
-        <p className="text-lg font-light md:col-span-3 md:row-start-2 md:pl-80">
-          I am THYNKSO, A simple todo app.
+        <p className="text-lg font-light md:col-span-3 md:row-span-1 md:pl-80">
+          I am THYNKSO. A simple todo app.
         </p>
       </div>
     </section>

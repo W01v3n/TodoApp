@@ -1,6 +1,11 @@
-import React, { useState } from "react";
 import "../styles/index.css";
 
-function Register() {}
+function RegisterForm() {
+  return (
+    <div className="py-20">
+      <h1 className="text-center text-2xl font-light">Create a new account</h1>
+    </div>
+  );
+}
 
-export default Register;
+export default RegisterForm;

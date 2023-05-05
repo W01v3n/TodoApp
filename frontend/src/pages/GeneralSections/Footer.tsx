@@ -10,7 +10,7 @@ function Footer() {
           Sabadia
         </p>
         <p>
-          {copyright} {year} Tal Sabadia
+          Copyright {copyright} Tal Sabadia {year}
         </p>
       </div>
     </section>

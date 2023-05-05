@@ -5,7 +5,7 @@ import yourSpace from "../../../assets/images/successful-task-completion.svg";
 
 function FeatureSection() {
   return (
-    <section className="feature-section col-1 overflow-hidden py-20 text-black md:col-span-full">
+    <section className="feature-section overflow-hidden py-20 text-black md:col-span-full">
       <h1 className="text-center text-5xl font-extralight tracking-wide md:text-7xl md:font-thin">
         Features
       </h1>

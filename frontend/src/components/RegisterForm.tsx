@@ -17,8 +17,8 @@ function RegisterForm() {
         <h1 className="text-2xl font-light md:col-span-full md:ml-6">
           Create a new account
         </h1>
-        <div className="container col-span-7 col-start-6 grid grid-cols-1 gap-5 md:grid-cols-12 md:grid-rows-6">
-          <div className="md:col-span-2 md:row-start-2">
+        <div className="container mt-10 grid grid-cols-4 grid-rows-6 gap-3 px-10 md:col-span-7 md:col-start-6 md:mt-0 md:grid-cols-12 md:gap-5 md:px-0">
+          <div className="col-span-2 md:col-span-2 md:row-start-2">
             <TextField
               color="primary"
               type="text"
@@ -29,7 +29,7 @@ function RegisterForm() {
             />
           </div>
 
-          <div className="md:col-span-2 md:row-start-2">
+          <div className="col-span-2 md:col-span-2 md:row-start-2">
             <TextField
               color="primary"
               type="text"
@@ -40,7 +40,7 @@ function RegisterForm() {
             />
           </div>
 
-          <div className="md:col-span-4 md:col-start-1 md:row-start-3">
+          <div className="col-span-4 md:col-span-4 md:col-start-1 md:row-start-3">
             <TextField
               color="primary"
               type="email"
@@ -50,7 +50,7 @@ function RegisterForm() {
               fullWidth
             />
           </div>
-          <div className="md:col-span-4 md:col-start-1 md:row-start-4">
+          <div className="col-span-4 md:col-span-4 md:col-start-1 md:row-start-4">
             <TextField
               color="primary"
               type="password"
@@ -59,6 +59,11 @@ function RegisterForm() {
               id="password"
               fullWidth
             />
+          </div>
+          <div className="col-span-2 col-start-2 md:col-span-2 md:col-start-2 md:row-start-5">
+            <button className="rounded-lg bg-gray-700 px-4 py-2 text-lg text-white shadow shadow-black transition duration-150 ease-in-out hover:bg-gray-800 hover:shadow-md hover:shadow-black active:bg-black  active:shadow-lg active:shadow-black md:text-2xl">
+              Sign Up
+            </button>
           </div>
         </div>
       </div>

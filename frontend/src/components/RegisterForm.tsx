@@ -60,7 +60,17 @@ function RegisterForm() {
               fullWidth
             />
           </div>
-          <div className="col-span-2 col-start-2 md:col-span-2 md:col-start-2 md:row-start-5">
+          <div className="col-span-4 md:col-span-4 md:col-start-1 md:row-start-5">
+            <TextField
+              color="primary"
+              type="password"
+              label="Verify Password"
+              required
+              id="verify-password"
+              fullWidth
+            />
+          </div>
+          <div className="col-span-2 col-start-2 md:col-span-2 md:col-start-2 md:row-start-6">
             <button className="rounded-lg bg-gray-700 px-4 py-2 text-lg text-white shadow shadow-black transition duration-150 ease-in-out hover:bg-gray-800 hover:shadow-md hover:shadow-black active:bg-black  active:shadow-lg active:shadow-black md:text-2xl">
               Sign Up
             </button>

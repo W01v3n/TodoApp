@@ -1,7 +1,6 @@
 import FeatureSection from "./Sections/FeatureSection";
 import HeroSection from "./Sections/HeroSection";
 import CallToActionSection from "./Sections/CallToActionSection";
-import Footer from "../GeneralSections/Footer";
 
 function HomePage() {
   return (
@@ -9,7 +8,6 @@ function HomePage() {
       <HeroSection />
       <FeatureSection />
       <CallToActionSection />
-      <Footer />
     </div>
   );
 }

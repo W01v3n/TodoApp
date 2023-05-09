@@ -1,35 +1,35 @@
-import List from "../../components/Authenticated/List";
+import TodoList from "../../components/Authenticated/TodoList";
 
-function ListsPage() {
+function TodoListsPage() {
   return (
     <div>
       <h1 className="my-8 text-center text-3xl font-light md:mb-5 md:ml-14 md:mt-8 md:text-left">
-        My Lists
+        My TodoLists
       </h1>
       <div className="mb-20 grid grid-cols-1 gap-10 md:mx-14 md:grid-cols-10 md:gap-10">
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
-        <List />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
+        <TodoList />
       </div>
     </div>
   );
 }
 
-export default ListsPage;
+export default TodoListsPage;

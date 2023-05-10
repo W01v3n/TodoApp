@@ -9,7 +9,7 @@ function TodoList() {
   }
 
   return (
-    <div className="container mx-28 w-3/6 flex-col shadow-md shadow-blue-500 md:m-0 md:w-auto">
+    <div className="container mx-28 w-3/6 shadow-md shadow-blue-400 md:m-0 md:w-auto">
       <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-300 shadow-md shadow-blue-500">
         <h3 className="inline-block w-80 p-1 text-center text-2xl font-light">
           List Name
@@ -24,7 +24,7 @@ function TodoList() {
       <ul
         className={`${
           isOpen ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0"
-        } overflow-hidden text-center text-lg transition-all duration-300 ease-in`}
+        } text-center text-lg transition-all duration-300 ease-in`}
       >
         <li>
           <TodoItem

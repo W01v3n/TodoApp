@@ -24,7 +24,7 @@ function TodoItem({ title, content, parentIsOpen }: TodoItemProps) {
       <div>
         <span>{title} </span>
         <button
-          className="m-2 bg-blue-400 px-2 py-1 opacity-90 shadow-md shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-500 active:bg-blue-500 active:shadow-lg active:shadow-blue-600"
+          className="m-2 bg-blue-400 px-2 py-1 text-base text-white opacity-90 shadow-md shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-500 active:bg-blue-500 active:shadow-lg active:shadow-blue-600"
           onClick={toggleContent}
         >
           Open

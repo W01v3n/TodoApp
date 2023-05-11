@@ -63,7 +63,7 @@ function TodoListsPage() {
       <h1 className="my-8 text-center text-3xl font-light md:mb-5 md:ml-14 md:mt-8 md:text-left">
         My TodoLists
       </h1>
-      <div className="my-2 flex justify-evenly md:mx-14 md:justify-normal">
+      <div className="my-5 flex justify-evenly md:mx-14 md:justify-normal">
         <button
           onClick={handleNewListButton}
           className="bg-blue-400 p-2 text-white opacity-90 shadow-lg shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-500 active:bg-blue-600 active:shadow-lg active:shadow-blue-600"

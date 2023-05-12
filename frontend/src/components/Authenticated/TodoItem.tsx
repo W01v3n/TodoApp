@@ -21,7 +21,7 @@ function TodoItem({ title, content, parentIsOpen }: TodoItemProps) {
 
   return (
     <div className="pt-2 font-light shadow shadow-blue-500">
-      <div className="mx-28 grid grid-cols-2 gap-4">
+      <div className="mx-4 grid grid-cols-2 gap-4 md:mx-28">
         <span className="mt-2">{title} </span>
         <button
           className="m-2 bg-blue-400 px-2 py-1 text-base text-white opacity-90 shadow-md shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-500 active:bg-blue-500 active:shadow-lg active:shadow-blue-600"

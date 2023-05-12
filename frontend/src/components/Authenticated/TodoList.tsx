@@ -67,7 +67,7 @@ function NewItemForm({ onSubmit }: NewItemFormProps) {
           />
 
           <div className="col-span-full row-start-3 my-2">
-            <button className="bg-blue-400 px-3 py-1 text-white opacity-90 shadow-lg shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-500 active:bg-blue-600 active:shadow-lg active:shadow-blue-600">
+            <button className="bg-blue-400 px-3 py-1 text-white opacity-90 shadow-lg shadow-blue-500 transition-all duration-150 hover:shadow-xl hover:shadow-blue-500 active:bg-blue-600 active:shadow-lg active:shadow-blue-600">
               Add
             </button>
           </div>
@@ -106,7 +106,7 @@ function TodoList({ listName, onDelete }: TodoListProps) {
     <div className="container mx-20 w-4/6 shadow-md shadow-blue-400 md:m-0 md:w-auto">
       <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-300 shadow-md shadow-blue-500">
         <button
-          className="m-2 bg-blue-400 p-2 text-white opacity-90 shadow-lg shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-500 active:bg-blue-600 active:shadow-lg active:shadow-blue-600"
+          className="m-2 bg-blue-400 p-2 text-white opacity-90 shadow-md shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-600 active:bg-blue-600 active:shadow-lg active:shadow-blue-600"
           onClick={toggleContent}
         >
           {isOpen ? "Close" : "Open"}
@@ -143,7 +143,7 @@ function TodoList({ listName, onDelete }: TodoListProps) {
                 isNewListFormOpen
                   ? "m-0 max-h-0 p-0 opacity-0 shadow-none"
                   : "max-h-[32rem] opacity-100"
-              } m-4 bg-blue-400 p-1 text-white opacity-90 shadow-lg shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-500 active:bg-blue-600 active:shadow-lg active:shadow-blue-600`}
+              } m-4 bg-blue-400 p-1 text-white opacity-90 shadow-lg shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-600 active:bg-blue-600 active:shadow-lg active:shadow-blue-600`}
               onClick={toggleNewItemForm}
             >
               New Item

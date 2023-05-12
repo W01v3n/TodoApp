@@ -47,7 +47,7 @@ function RegisterForm() {
   return (
     <form>
       <div className="grid grid-cols-1 py-20 text-center md:grid-cols-12">
-        <h1 className="text-2xl font-light md:col-span-full md:ml-6">
+        <h1 className="pb-4 text-2xl font-light md:col-span-full md:ml-6">
           Create a new account
         </h1>
         <div className="container mt-10 grid grid-cols-4 gap-3 px-10 md:col-span-7 md:col-start-6 md:mt-0 md:grid-cols-12 md:gap-5 md:px-0">

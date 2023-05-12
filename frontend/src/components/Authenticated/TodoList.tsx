@@ -9,6 +9,7 @@ interface TodoItemProps {
 }
 interface TodoListProps {
   listName: string;
+  onDelete: (listName: string) => void;
 }
 
 interface NewItemFormProps {
@@ -76,7 +77,7 @@ function NewItemForm({ onSubmit }: NewItemFormProps) {
   );
 }
 
-function TodoList({ listName }: TodoListProps) {
+function TodoList({ listName, onDelete }: TodoListProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isNewListFormOpen, setIsNewListFormOpen] = useState(false);
   const [todoItems, setTodoItems] = useState<Array<TodoItemProps>>([]);
@@ -102,16 +103,22 @@ function TodoList({ listName }: TodoListProps) {
   }
 
   return (
-    <div className="container mx-28 w-3/6 shadow-md shadow-blue-400 md:m-0 md:w-auto">
+    <div className="container mx-20 w-4/6 shadow-md shadow-blue-400 md:m-0 md:w-auto">
       <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-300 shadow-md shadow-blue-500">
-        <h3 className="inline-block w-80 p-1 text-center text-2xl font-light text-white">
-          {listName}
-        </h3>
         <button
           className="m-2 bg-blue-400 p-2 text-white opacity-90 shadow-lg shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-500 active:bg-blue-600 active:shadow-lg active:shadow-blue-600"
           onClick={toggleContent}
         >
-          Open
+          {isOpen ? "Close" : "Open"}
+        </button>
+        <h3 className="mx-8 inline-block w-80 p-1 text-center text-2xl font-light text-white md:mx-10">
+          {listName}
+        </h3>
+        <button
+          className="m-2 bg-red-500 px-1 py-1 text-base text-white opacity-90 shadow-md shadow-red-500 transition-all duration-150 hover:shadow-lg hover:shadow-red-600 active:bg-red-600 active:shadow-lg active:shadow-red-700"
+          onClick={() => onDelete(listName)}
+        >
+          Delete
         </button>
       </div>
 

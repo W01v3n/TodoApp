@@ -58,6 +58,18 @@ function TodoListsPage() {
     setIsFormOpen(false);
   }
 
+  // function handleDeleteItem(title: string) {
+  //   setTodoItems((prevItems) =>
+  //     prevItems.filter((item) => item.title !== title)
+  //   );
+  // }
+
+  function handleDeleteList(listName: string) {
+    setTodoLists((prevLists) =>
+      prevLists.filter((nameOfList) => nameOfList !== listName)
+    );
+  }
+
   return (
     <div>
       <h1 className="my-8 text-center text-3xl font-light md:mb-5 md:ml-14 md:mt-8 md:text-left">
@@ -74,7 +86,11 @@ function TodoListsPage() {
       {isFormOpen && <NewListForm onSubmit={handleNewListSubmit} />}
       <div className="mb-20 grid grid-cols-1 gap-10 md:mx-14 md:grid-cols-4 md:items-start md:gap-10">
         {todoLists.map((listName, index) => (
-          <TodoList key={index} listName={listName} />
+          <TodoList
+            key={index}
+            listName={listName}
+            onDelete={handleDeleteList}
+          />
         ))}
       </div>
     </div>

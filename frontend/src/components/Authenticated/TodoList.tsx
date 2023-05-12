@@ -37,6 +37,8 @@ function NewItemForm({ onSubmit }: NewItemFormProps) {
     };
     event.preventDefault();
     onSubmit(newItem);
+    setItemName("");
+    setItemContent("");
   }
 
   return (
@@ -108,7 +110,7 @@ function TodoList({ listName }: TodoListProps) {
 
       <ul
         className={`${
-          isOpen ? "max-h-[32rem] opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "max-h-[128rem] opacity-100" : "max-h-0 opacity-0"
         } text-center text-lg transition-all duration-300 ease-in`}
       >
         {todoItems.map((item, index) => (

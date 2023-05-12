@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 interface TodoItemProps {
   title: string;
-  content: string;
+  content?: string;
   parentIsOpen: boolean;
 }
 

@@ -3,11 +3,15 @@ import { FormEvent, useState } from "react";
 import api from "../services/api";
 
 function RegisterForm() {
+  // User data states
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
+
+  // loading animation states
+  const [loading, setLoading] = useState(false);
 
   function handleFirstName(event: React.ChangeEvent<HTMLInputElement>) {
     const firstName = event.target.value;
@@ -34,18 +38,29 @@ function RegisterForm() {
     setVerifyPassword(verifyPassword);
   }
 
-  async function RegisterUser(event: FormEvent) {
+  async function registerUser(event: FormEvent) {
     event.preventDefault();
+    setLoading(true);
     // Create user object
     const userData = {
       username: firstName.concat(lastName),
       email: email,
       password: password,
     };
+
+    try {
+      // Send user data to backend
+      const response = await api.post("/users/register", userData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <form>
+    <form onSubmit={registerUser}>
       <div className="grid grid-cols-1 py-20 text-center md:grid-cols-12">
         <h1 className="pb-4 text-2xl font-light md:col-span-full md:ml-6">
           Create a new account
@@ -144,6 +159,7 @@ function RegisterForm() {
           <div className="col-span-2 col-start-2 row-start-6 md:col-span-2 md:col-start-2 md:row-start-6">
             <button
               type="submit"
+              disabled={loading}
               className="rounded-lg bg-gray-700 px-4 py-2 text-lg text-white shadow shadow-black transition duration-150 ease-in-out hover:bg-gray-800 hover:shadow-md hover:shadow-black active:bg-black  active:shadow-lg active:shadow-black md:text-2xl"
             >
               Sign Up

@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 import express, { Application } from "express";
+import cors from "cors";
 import routes from "./routes";
 import { errorHandler } from "./middleware/errorHandler";
 import cookieParser from "cookie-parser";
@@ -11,6 +12,9 @@ const app: Application = express();
 
 // Use JSON parsing middleware from express
 app.use(express.json());
+
+// Use CORS
+app.use(cors());
 
 // Use cookie parser
 app.use(cookieParser());

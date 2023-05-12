@@ -28,6 +28,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv = __importStar(require("dotenv"));
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const routes_1 = __importDefault(require("./routes"));
 const errorHandler_1 = require("./middleware/errorHandler");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
@@ -37,6 +38,8 @@ const port = process.env.API_PORT || 3000;
 const app = (0, express_1.default)();
 // Use JSON parsing middleware from express
 app.use(express_1.default.json());
+// Use CORS
+app.use((0, cors_1.default)());
 // Use cookie parser
 app.use((0, cookie_parser_1.default)());
 // Use routes from routes directory

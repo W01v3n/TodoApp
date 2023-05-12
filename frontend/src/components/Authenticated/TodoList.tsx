@@ -88,6 +88,7 @@ function TodoList({ listName }: TodoListProps) {
 
   function handleNewItemSubmit(newItem: TodoItemProps) {
     setTodoItems((prevItems) => [...prevItems, newItem]);
+    setIsNewListFormOpen(!isNewListFormOpen);
   }
 
   function toggleNewItemForm() {

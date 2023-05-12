@@ -95,6 +95,12 @@ function TodoList({ listName }: TodoListProps) {
     setIsNewListFormOpen(!isNewListFormOpen);
   }
 
+  function handleDeleteItem(title: string) {
+    setTodoItems((prevItems) =>
+      prevItems.filter((item) => item.title !== title)
+    );
+  }
+
   return (
     <div className="container mx-28 w-3/6 shadow-md shadow-blue-400 md:m-0 md:w-auto">
       <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-300 shadow-md shadow-blue-500">
@@ -120,6 +126,7 @@ function TodoList({ listName }: TodoListProps) {
             title={item.title}
             content={item.content}
             parentIsOpen={isOpen ? true : false}
+            onDelete={handleDeleteItem}
           />
         ))}
         <li>

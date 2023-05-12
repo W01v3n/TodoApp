@@ -33,7 +33,7 @@ function NewItemForm({ onSubmit }: NewItemFormProps) {
     const newItem: TodoItemProps = {
       title: itemName,
       content: itemContent,
-      parentIsOpen: false,
+      parentIsOpen: true,
     };
     event.preventDefault();
     onSubmit(newItem);
@@ -118,7 +118,7 @@ function TodoList({ listName }: TodoListProps) {
             key={index}
             title={item.title}
             content={item.content}
-            parentIsOpen={item.parentIsOpen}
+            parentIsOpen={isOpen ? true : false}
           />
         ))}
         <li>

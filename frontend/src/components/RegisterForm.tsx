@@ -1,15 +1,37 @@
 import { TextField } from "@mui/material";
-// import { useState } from "react";
+import { useState } from "react";
 
 function RegisterForm() {
-  // const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [verifyPassword, setVerifyPassword] = useState("");
 
-  // function handleEmailChange(event: React.FormEvent<HTMLInputElement>) {
-  //   const value = event.currentTarget.value;
-  //   if (value) {
-  //     setEmail(value);
-  //   }
-  // }
+  function handleFirstName(event: React.ChangeEvent<HTMLInputElement>) {
+    const firstName = event.target.value;
+    setFirstName(firstName);
+  }
+
+  function handleLastName(event: React.ChangeEvent<HTMLInputElement>) {
+    const lastName = event.target.value;
+    setLastName(lastName);
+  }
+
+  function handleEmail(event: React.ChangeEvent<HTMLInputElement>) {
+    const email = event.target.value;
+    setEmail(email);
+  }
+
+  function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
+    const password = event.target.value;
+    setPassword(password);
+  }
+
+  function handleVerifyPassword(event: React.ChangeEvent<HTMLInputElement>) {
+    const verifyPassword = event.target.value;
+    setVerifyPassword(verifyPassword);
+  }
 
   return (
     <form>
@@ -23,6 +45,8 @@ function RegisterForm() {
               color="primary"
               type="text"
               label="First Name"
+              value={firstName}
+              onChange={handleFirstName}
               id="fName"
               required
               fullWidth
@@ -34,6 +58,8 @@ function RegisterForm() {
               color="primary"
               type="text"
               label="Last Name"
+              value={lastName}
+              onChange={handleLastName}
               id="lName"
               required
               fullWidth
@@ -45,6 +71,8 @@ function RegisterForm() {
               color="primary"
               type="email"
               label="Email Address"
+              value={email}
+              onChange={handleEmail}
               required
               id="email"
               fullWidth
@@ -55,6 +83,8 @@ function RegisterForm() {
               color="primary"
               type="password"
               label="Password"
+              value={password}
+              onChange={handlePassword}
               required
               id="password"
               fullWidth
@@ -65,6 +95,8 @@ function RegisterForm() {
               color="primary"
               type="password"
               label="Verify Password"
+              value={verifyPassword}
+              onChange={handleVerifyPassword}
               required
               id="verify-password"
               fullWidth

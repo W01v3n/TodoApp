@@ -1,4 +1,4 @@
-import { TextField, dividerClasses } from "@mui/material";
+import { TextField } from "@mui/material";
 import { FormEvent, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
@@ -46,6 +46,15 @@ function RegisterForm() {
     setVerifyPassword(verifyPassword);
   }
 
+  function isValidEmail(email: string) {
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    if (!emailRegex.test(email)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   const AnimatedDiv = animated.div;
 
   const closeAnimation = useSpring({
@@ -79,6 +88,11 @@ function RegisterForm() {
 
   async function registerUser(event: FormEvent) {
     event.preventDefault();
+    if (password !== verifyPassword) {
+      return;
+    } else if (!isValidEmail(email)) {
+      return;
+    }
     // setLoading(true);
     setSubmitStatus("loading");
     setFormLoading(true);
@@ -160,6 +174,12 @@ function RegisterForm() {
                     label="Email Address"
                     value={email}
                     onChange={handleEmail}
+                    helperText={
+                      !isValidEmail(email) &&
+                      email.length > 0 &&
+                      "Email is not valid!"
+                    }
+                    error={!isValidEmail(email) && email.length > 0}
                     required
                     id="email"
                     fullWidth
@@ -178,16 +198,19 @@ function RegisterForm() {
                     id="password"
                     fullWidth
                     error={
-                      password !== verifyPassword &&
-                      password.length > 0 &&
-                      verifyPassword.length > 0
+                      (password !== verifyPassword &&
+                        password.length > 0 &&
+                        verifyPassword.length > 0) ||
+                      (password.length > 0 && password.length < 6)
                     }
                     helperText={
                       password !== verifyPassword &&
                       password.length > 0 &&
                       verifyPassword.length > 0
                         ? "Passwords do not match"
-                        : ""
+                        : password.length > 0 &&
+                          password.length < 6 &&
+                          "Password has to be at least 6 characters."
                     }
                   />
                 </div>

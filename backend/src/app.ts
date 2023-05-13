@@ -14,7 +14,12 @@ const app: Application = express();
 app.use(express.json());
 
 // Use CORS
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 // Use cookie parser
 app.use(cookieParser());

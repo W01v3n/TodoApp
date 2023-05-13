@@ -25,3 +25,21 @@ export async function getUserByEmail(email: string): Promise<IUser | null> {
     updated_at: row.updated_at,
   };
 }
+
+export async function getUserById(id: string | number): Promise<IUser | null> {
+  const [rows] = await pool.query<RowDataPacket[]>(
+    "SELECT * FROM users WHERE id = ?",
+    [id]
+  );
+  const row = rows[0];
+  if (!row) return null;
+
+  return {
+    id: row.id,
+    username: row.username,
+    email: row.email,
+    password_hash: row.password_hash,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+  };
+}

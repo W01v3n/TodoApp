@@ -2,9 +2,17 @@ import { TextField } from "@mui/material";
 import { FormEvent, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import axios, { isAxiosError } from "axios";
 
 function LoginForm() {
+  const navigate = useNavigate();
+
+  function navigateToMyLists() {
+    navigate("/lists");
+  }
+
   // User data states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -90,14 +98,22 @@ function LoginForm() {
       if (response.status == 200) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setSubmitStatus("authorized");
+
+        // Redirect to My Lists
+        navigateToMyLists();
       } else if (response.status == 401) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setSubmitStatus("unAuthorized");
       }
     } catch (error) {
-      console.log(error);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSubmitStatus("error");
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        setSubmitStatus("unAuthorized");
+      } else {
+        console.log(error);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        setSubmitStatus("error");
+      }
     } finally {
       setFormLoading(false);
     }

@@ -1,10 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import IUser from "../interfaces/iuser.interface";
 import { hashPassword, verifyPassword } from "../utils/auth.utils";
-import { createUser, getUserByEmail } from "../repositories/user.repository";
-import jwt from "jsonwebtoken";
+import {
+  createUser,
+  getUserByEmail,
+  getUserById,
+} from "../repositories/user.repository";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import * as dotenv from "dotenv";
+import { strict } from "assert";
 dotenv.config();
+
+interface MyJwtPayload extends JwtPayload {
+  userId: string | number;
+}
 
 export async function registerUser(
   req: Request,
@@ -55,6 +64,8 @@ export async function userLogin(
       console.log(`USER ID: ${user.id}`);
 
       const tokenExpirationTime = Math.floor(Date.now() / 1000) + 60 * 60; // Expires in 1 hour
+      const refreshTokenExpirationTime =
+        Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; // Refresh token expires in 7 days
 
       const token = jwt.sign(
         { userId: user.id },
@@ -64,7 +75,14 @@ export async function userLogin(
         }
       );
 
+      const refreshToken = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_REFRESH_TOKEN_SECRET as string,
+        { expiresIn: refreshTokenExpirationTime }
+      );
+
       console.log(token);
+      console.log(refreshToken);
 
       // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
       res.cookie("token", token, {
@@ -74,11 +92,71 @@ export async function userLogin(
         sameSite: "strict", // Set the sameSite attribute to prevent CSRF attacks,
       });
 
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 24 * 7 * 1000,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+
       res
         .status(200)
         .json({ message: "Logged in successfully.", token: token });
+      console.log({ message: "Logged in successfully.", token: token });
     } else {
       res.status(401).json({ error: "Invalid email or password." });
+      console.log({ error: "Invalid email or password." });
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function refreshAccessToken(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { refreshToken } = req.cookies;
+    if (!refreshToken) {
+      console.log("Refresh token not found.");
+    }
+
+    const decodedToken = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_TOKEN_SECRET as string
+    ) as MyJwtPayload;
+
+    if (typeof decodedToken !== "string") {
+      // Now it's safe to access decodedToken.userId
+      const userId = decodedToken.userId;
+      const user = await getUserById(userId);
+
+      if (!user) {
+        console.log("User not found");
+        res.status(401).json({ message: "User not found." });
+      }
+
+      const newToken = jwt.sign(
+        { userId: user?.id },
+        process.env.JWT_SECRET as string,
+        {
+          expiresIn: Math.floor(Date.now() / 1000) + 60 * 60, // Access token expires in 1 hour
+        }
+      );
+
+      res.cookie("token", newToken, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 1000,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+
+      res.status(200).json({ newRefreshToken: newToken });
+    } else {
+      // Handle the case where the token is invalid
+      console.log(decodedToken); // Will probably be an error in that case.
     }
   } catch (error) {
     next(error);

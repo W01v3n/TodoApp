@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userLogin = exports.registerUser = void 0;
+exports.refreshAccessToken = exports.userLogin = exports.registerUser = void 0;
 const auth_utils_1 = require("../utils/auth.utils");
 const user_repository_1 = require("../repositories/user.repository");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -69,16 +69,25 @@ async function userLogin(req, res, next) {
             // If everything checks out (logged in successfully), create a token.
             console.log(`USER ID: ${user.id}`);
             const tokenExpirationTime = Math.floor(Date.now() / 1000) + 60 * 60; // Expires in 1 hour
+            const refreshTokenExpirationTime = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7; // Refresh token expires in 7 days
             const token = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_SECRET, {
                 expiresIn: tokenExpirationTime,
             });
+            const refreshToken = jsonwebtoken_1.default.sign({ userId: user.id }, process.env.JWT_REFRESH_TOKEN_SECRET, { expiresIn: refreshTokenExpirationTime });
             console.log(token);
+            console.log(refreshToken);
             // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
             res.cookie("token", token, {
                 httpOnly: true,
                 maxAge: 60 * 60 * 1000,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "strict", // Set the sameSite attribute to prevent CSRF attacks,
+            });
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                maxAge: 60 * 60 * 24 * 7 * 1000,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
             });
             res
                 .status(200)
@@ -93,3 +102,39 @@ async function userLogin(req, res, next) {
     }
 }
 exports.userLogin = userLogin;
+async function refreshAccessToken(req, res, next) {
+    try {
+        const { refreshToken } = req.cookies;
+        if (!refreshToken) {
+            console.log("Refresh token not found.");
+        }
+        const decodedToken = jsonwebtoken_1.default.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET);
+        if (typeof decodedToken !== "string") {
+            // Now it's safe to access decodedToken.userId
+            const userId = decodedToken.userId;
+            const user = await (0, user_repository_1.getUserById)(userId);
+            if (!user) {
+                console.log("User not found");
+                res.status(401).json({ message: "User not found." });
+            }
+            const newToken = jsonwebtoken_1.default.sign({ userId: user?.id }, process.env.JWT_SECRET, {
+                expiresIn: Math.floor(Date.now() / 1000) + 60 * 60, // Access token expires in 1 hour
+            });
+            res.cookie("token", newToken, {
+                httpOnly: true,
+                maxAge: 60 * 60 * 1000,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+            });
+            res.status(200).json({ newRefreshToken: newToken });
+        }
+        else {
+            // Handle the case where the token is invalid
+            console.log(decodedToken); // Will probably be an error in that case.
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+}
+exports.refreshAccessToken = refreshAccessToken;

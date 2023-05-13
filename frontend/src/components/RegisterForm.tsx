@@ -12,12 +12,12 @@ function RegisterForm() {
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
 
-  // loading animation states
-  // const [loading, setLoading] = useState(false);
   // Form submission state
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "loading" | "success" | "error"
   >("idle");
+
+  // loading animation states
   const [isFormClosed, setFormClosed] = useState(false);
   const [isFormLoading, setFormLoading] = useState(false);
 
@@ -73,7 +73,6 @@ function RegisterForm() {
           ? "0%"
           : "100%",
     },
-    // delay: 1000,
     config: { duration: 400 },
     onRest: () => {
       if (
@@ -93,7 +92,6 @@ function RegisterForm() {
     } else if (!isValidEmail(email)) {
       return;
     }
-    // setLoading(true);
     setSubmitStatus("loading");
     setFormLoading(true);
     // Create user object
@@ -109,7 +107,6 @@ function RegisterForm() {
       console.log(response);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setSubmitStatus("success");
-      // await wait();
     } catch (error) {
       console.log(error);
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -117,9 +114,6 @@ function RegisterForm() {
     } finally {
       setFormLoading(false);
     }
-    // finally {
-    //   setLoading(false);
-    // }
   }
 
   // function wait() {
@@ -135,7 +129,7 @@ function RegisterForm() {
   return (
     <>
       <AnimatedDiv style={closeAnimation}>
-        <div className="relative">
+        <div>
           <form onSubmit={registerUser}>
             <div className="grid grid-cols-1 py-20 text-center md:grid-cols-12">
               <h1 className="pb-4 text-2xl font-light md:col-span-full md:ml-6">

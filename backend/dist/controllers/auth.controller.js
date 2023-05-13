@@ -92,9 +92,11 @@ async function userLogin(req, res, next) {
             res
                 .status(200)
                 .json({ message: "Logged in successfully.", token: token });
+            console.log({ message: "Logged in successfully.", token: token });
         }
         else {
             res.status(401).json({ error: "Invalid email or password." });
+            console.log({ error: "Invalid email or password." });
         }
     }
     catch (error) {

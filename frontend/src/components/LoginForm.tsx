@@ -4,7 +4,7 @@ import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
-import axios, { isAxiosError } from "axios";
+import axios from "axios";
 
 function LoginForm() {
   const navigate = useNavigate();

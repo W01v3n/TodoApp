@@ -1,5 +1,7 @@
-import { TextField } from "@mui/material";
+import { TextField, dividerClasses } from "@mui/material";
 import { FormEvent, useState } from "react";
+import { useSpring, animated } from "react-spring";
+import { ClipLoader } from "react-spinners";
 import api from "../services/api";
 
 function RegisterForm() {
@@ -11,7 +13,13 @@ function RegisterForm() {
   const [verifyPassword, setVerifyPassword] = useState("");
 
   // loading animation states
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // Form submission state
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [isFormClosed, setFormClosed] = useState(false);
+  const [isFormLoading, setFormLoading] = useState(false);
 
   function handleFirstName(event: React.ChangeEvent<HTMLInputElement>) {
     const firstName = event.target.value;
@@ -38,9 +46,42 @@ function RegisterForm() {
     setVerifyPassword(verifyPassword);
   }
 
+  const AnimatedDiv = animated.div;
+
+  const closeAnimation = useSpring({
+    from: { opacity: 1, height: "100%" },
+    to: {
+      opacity:
+        submitStatus === "loading" ||
+        submitStatus === "success" ||
+        submitStatus === "error"
+          ? 0
+          : 1,
+      height:
+        submitStatus === "loading" ||
+        submitStatus === "success" ||
+        submitStatus === "error"
+          ? "0%"
+          : "100%",
+    },
+    // delay: 1000,
+    config: { duration: 400 },
+    onRest: () => {
+      if (
+        submitStatus === "loading" ||
+        submitStatus === "success" ||
+        submitStatus === "error"
+      ) {
+        setFormClosed(true);
+      }
+    },
+  });
+
   async function registerUser(event: FormEvent) {
     event.preventDefault();
-    setLoading(true);
+    // setLoading(true);
+    setSubmitStatus("loading");
+    setFormLoading(true);
     // Create user object
     const userData = {
       username: firstName.concat(lastName),
@@ -52,122 +93,162 @@ function RegisterForm() {
       // Send user data to backend
       const response = await api.post("/users/register", userData);
       console.log(response);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setSubmitStatus("success");
+      // await wait();
     } catch (error) {
       console.log(error);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setSubmitStatus("error");
     } finally {
-      setLoading(false);
+      setFormLoading(false);
     }
+    // finally {
+    //   setLoading(false);
+    // }
   }
 
+  // function wait() {
+  //   return new Promise<void>((resolve) => {
+  //     setSubmitStatus("loading");
+  //     setTimeout(() => {
+  //       setSubmitStatus("success");
+  //       resolve();
+  //     }, 5000);
+  //   });
+  // }
+
   return (
-    <form onSubmit={registerUser}>
-      <div className="grid grid-cols-1 py-20 text-center md:grid-cols-12">
-        <h1 className="pb-4 text-2xl font-light md:col-span-full md:ml-6">
-          Create a new account
-        </h1>
-        <div className="container mt-10 grid grid-cols-4 gap-3 px-10 md:col-span-7 md:col-start-6 md:mt-0 md:grid-cols-12 md:gap-5 md:px-0">
-          <div className="col-span-2 md:col-span-2 md:row-start-2">
-            <TextField
-              color="primary"
-              type="text"
-              label="First Name"
-              value={firstName}
-              onChange={handleFirstName}
-              id="fName"
-              required
-              fullWidth
-            />
-          </div>
+    <>
+      <AnimatedDiv style={closeAnimation}>
+        <div className="relative">
+          <form onSubmit={registerUser}>
+            <div className="grid grid-cols-1 py-20 text-center md:grid-cols-12">
+              <h1 className="pb-4 text-2xl font-light md:col-span-full md:ml-6">
+                Create a new account
+              </h1>
+              <div className="container mt-10 grid grid-cols-4 gap-3 px-10 md:col-span-7 md:col-start-6 md:mt-0 md:grid-cols-12 md:gap-5 md:px-0">
+                <div className="col-span-2 md:col-span-2 md:row-start-2">
+                  <TextField
+                    color="primary"
+                    type="text"
+                    label="First Name"
+                    value={firstName}
+                    onChange={handleFirstName}
+                    id="fName"
+                    required
+                    fullWidth
+                  />
+                </div>
 
-          <div className="col-span-2 md:col-span-2 md:row-start-2">
-            <TextField
-              color="primary"
-              type="text"
-              label="Last Name"
-              value={lastName}
-              onChange={handleLastName}
-              id="lName"
-              required
-              fullWidth
-            />
-          </div>
-          <div className="col-span-4 md:col-span-4 md:col-start-1 md:row-start-3">
-            <TextField
-              color="primary"
-              type="email"
-              label="Email Address"
-              value={email}
-              onChange={handleEmail}
-              required
-              id="email"
-              fullWidth
-            />
-          </div>
-          <div
-            className={`col-span-4 row-start-4 md:col-span-4 md:col-start-1`}
-          >
-            <TextField
-              color="primary"
-              type="password"
-              label="Password"
-              value={password}
-              onChange={handlePassword}
-              required
-              id="password"
-              fullWidth
-              error={
-                password !== verifyPassword &&
-                password.length > 0 &&
-                verifyPassword.length > 0
-              }
-              helperText={
-                password !== verifyPassword &&
-                password.length > 0 &&
-                verifyPassword.length > 0
-                  ? "Passwords do not match"
-                  : ""
-              }
-            />
-          </div>
-          <div
-            className={`col-span-4 row-start-5 md:col-span-4 md:col-start-1`}
-          >
-            <TextField
-              color="primary"
-              type="password"
-              label="Verify Password"
-              value={verifyPassword}
-              onChange={handleVerifyPassword}
-              required
-              id="verify-password"
-              fullWidth
-              error={
-                password !== verifyPassword &&
-                password.length > 0 &&
-                verifyPassword.length > 0
-              }
-              helperText={
-                password !== verifyPassword &&
-                password.length > 0 &&
-                verifyPassword.length > 0
-                  ? "Passwords do not match"
-                  : ""
-              }
-            />
-          </div>
+                <div className="col-span-2 md:col-span-2 md:row-start-2">
+                  <TextField
+                    color="primary"
+                    type="text"
+                    label="Last Name"
+                    value={lastName}
+                    onChange={handleLastName}
+                    id="lName"
+                    required
+                    fullWidth
+                  />
+                </div>
+                <div className="col-span-4 md:col-span-4 md:col-start-1 md:row-start-3">
+                  <TextField
+                    color="primary"
+                    type="email"
+                    label="Email Address"
+                    value={email}
+                    onChange={handleEmail}
+                    required
+                    id="email"
+                    fullWidth
+                  />
+                </div>
+                <div
+                  className={`col-span-4 row-start-4 md:col-span-4 md:col-start-1`}
+                >
+                  <TextField
+                    color="primary"
+                    type="password"
+                    label="Password"
+                    value={password}
+                    onChange={handlePassword}
+                    required
+                    id="password"
+                    fullWidth
+                    error={
+                      password !== verifyPassword &&
+                      password.length > 0 &&
+                      verifyPassword.length > 0
+                    }
+                    helperText={
+                      password !== verifyPassword &&
+                      password.length > 0 &&
+                      verifyPassword.length > 0
+                        ? "Passwords do not match"
+                        : ""
+                    }
+                  />
+                </div>
+                <div
+                  className={`col-span-4 row-start-5 md:col-span-4 md:col-start-1`}
+                >
+                  <TextField
+                    color="primary"
+                    type="password"
+                    label="Verify Password"
+                    value={verifyPassword}
+                    onChange={handleVerifyPassword}
+                    required
+                    id="verify-password"
+                    fullWidth
+                    error={
+                      password !== verifyPassword &&
+                      password.length > 0 &&
+                      verifyPassword.length > 0
+                    }
+                    helperText={
+                      password !== verifyPassword &&
+                      password.length > 0 &&
+                      verifyPassword.length > 0
+                        ? "Passwords do not match"
+                        : ""
+                    }
+                  />
+                </div>
 
-          <div className="col-span-2 col-start-2 row-start-6 md:col-span-2 md:col-start-2 md:row-start-6">
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-lg bg-gray-700 px-4 py-2 text-lg text-white shadow shadow-black transition duration-150 ease-in-out hover:bg-gray-800 hover:shadow-md hover:shadow-black active:bg-black  active:shadow-lg active:shadow-black md:text-2xl"
-            >
-              Sign Up
-            </button>
-          </div>
+                <div className="col-span-2 col-start-2 row-start-6 md:col-span-2 md:col-start-2 md:row-start-6">
+                  <button
+                    type="submit"
+                    disabled={submitStatus === "loading"}
+                    className="rounded-lg bg-gray-700 px-4 py-2 text-lg text-white shadow shadow-black transition duration-150 ease-in-out hover:bg-gray-800 hover:shadow-md hover:shadow-black active:bg-black  active:shadow-lg active:shadow-black md:text-2xl"
+                  >
+                    Sign Up
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
-      </div>
-    </form>
+      </AnimatedDiv>
+      {isFormLoading && (
+        <div className="relative inset-0 flex items-center justify-center md:absolute md:top-96 md:ml-10">
+          <ClipLoader color="#5b5b5b" loading={true} size={40} />
+        </div>
+      )}
+
+      {isFormClosed && submitStatus === "success" && (
+        <div className="flex h-full items-center justify-center opacity-90">
+          <p className="text-2xl text-green-500">Registration Successful!</p>
+        </div>
+      )}
+      {isFormClosed && submitStatus === "error" && (
+        <div className="flex h-full items-center justify-center opacity-90">
+          <p className="text-2xl text-red-500">Registration Failed.</p>
+        </div>
+      )}
+    </>
   );
 }
 

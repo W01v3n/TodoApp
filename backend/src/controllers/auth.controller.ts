@@ -162,3 +162,41 @@ export async function refreshAccessToken(
     next(error);
   }
 }
+
+export async function getAuthenticatedUser(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  try {
+    const { accessToken } = req.cookies;
+    if (!accessToken) {
+      res.status(401).json({ message: "Not Authenticated" });
+    }
+
+    const decodedToken = jwt.verify(
+      accessToken,
+      process.env.JWT_SECRET as string
+    ) as MyJwtPayload;
+
+    if (typeof decodedToken !== "string") {
+      const userId = decodedToken.userId;
+      const user = await getUserById(userId);
+
+      if (!user) {
+        res.status(401).json({ message: "User not found." });
+      }
+
+      // Return the user's data, but remove the password field for security
+      if (user) {
+        const { password_hash, ...rest } = user;
+        res.status(200).json(rest);
+      }
+    } else {
+      // Handle the case where the token is invalid
+      res.status(401).json({ message: "Invalid token" });
+    }
+  } catch (error) {
+    next(error);
+  }
+}

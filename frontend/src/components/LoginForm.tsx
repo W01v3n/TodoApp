@@ -6,8 +6,11 @@ import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import axios from "axios";
 
+import { useAuth } from "./context/AuthContext";
+
 function LoginForm() {
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth();
 
   function navigateToMyLists() {
     navigate("/lists");
@@ -98,6 +101,9 @@ function LoginForm() {
       if (response.status == 200) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         setSubmitStatus("authorized");
+
+        // Update the isAuthenticated state
+        setIsAuthenticated(true);
 
         // Redirect to My Lists
         navigateToMyLists();

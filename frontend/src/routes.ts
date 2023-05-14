@@ -4,6 +4,7 @@ type RouteType = {
   path: string;
   component: React.ComponentType;
   exact?: boolean;
+  isProtected?: boolean;
 } & RouteProps;
 
 import {
@@ -23,6 +24,7 @@ const routes: RouteType[] = [
   {
     path: "/lists",
     component: ListsPage,
+    isProtected: true,
   },
   {
     path: "/login",
@@ -32,10 +34,10 @@ const routes: RouteType[] = [
     path: "/register",
     component: RegisterPage,
   },
-  {
-    path: "/lists/:listName",
-    component: ListPage,
-  },
+  // {
+  //   path: "/lists/:listName",
+  //   component: ListPage,
+  // },
 ];
 
 export default routes;

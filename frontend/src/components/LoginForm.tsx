@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
@@ -10,11 +10,15 @@ import { useAuth } from "./context/AuthContext";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useAuth();
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
 
   function navigateToMyLists() {
     navigate("/lists");
   }
+
+  useEffect(() => {
+    isAuthenticated && navigateToMyLists();
+  }, [isAuthenticated]);
 
   // User data states
   const [email, setEmail] = useState("");
@@ -99,25 +103,20 @@ function LoginForm() {
       // Send user data to backend
       const response = await api.post("/users/login", userData);
       if (response.status == 200) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setSubmitStatus("authorized");
-
         // Update the isAuthenticated state
         setIsAuthenticated(true);
+        setSubmitStatus("authorized");
 
         // Redirect to My Lists
         navigateToMyLists();
       } else if (response.status == 401) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         setSubmitStatus("unAuthorized");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         setSubmitStatus("unAuthorized");
       } else {
         console.log(error);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         setSubmitStatus("error");
       }
     } finally {

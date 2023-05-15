@@ -85,6 +85,8 @@ export async function userLogin(
       console.log(refreshToken);
 
       // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
+      res.cookie("isAuthenticated", true);
+
       res.cookie("token", token, {
         httpOnly: true,
         maxAge: 60 * 60 * 1000, // Set the cookie expiration to match the JWT expiration (1 hour)
@@ -171,9 +173,12 @@ export async function getAuthenticatedUser(
   console.log("Got request!");
 
   try {
-    const { token } = req.cookies;
+    const { token, isAuthenticated } = req.cookies;
+    if (!isAuthenticated) {
+      res.status(401).json({ isAuthenticated: false });
+    }
     if (!token) {
-      res.status(401).json({ message: "Not Authenticated" });
+      res.status(401).json({ message: "No token was provided!" });
       console.log("Did not get a token!");
     }
 
@@ -194,7 +199,7 @@ export async function getAuthenticatedUser(
       // Return the user's data, but remove the password field for security
       if (user) {
         const { password_hash, ...rest } = user;
-        res.status(200).json(rest);
+        res.status(200).json({ rest, isAuthenticated: true });
         console.log("Authenticated!");
       }
     } else {

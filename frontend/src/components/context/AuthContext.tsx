@@ -40,14 +40,23 @@ export const AuthProvider = ({ children }: RouteProps) => {
   // Use the useCookies hook to get access to the cookies
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
-  // When the component mounts, it makes a request to the /auth/me endpoint to see if there is an authenticated user.
+  function isObjectEmpty(object: any) {
+    return Object.keys(object).length === 0;
+  }
+
+  // When the component mounts, it makes a request to the /auth/re endpoint to see if there is an authenticated user.
   useEffect(() => {
     const checkAuthenticatedUser = async () => {
       try {
-        if (cookies) {
+        // Check if there are cookies
+        if (!isObjectEmpty(cookies)) {
           const response = await api.get("/auth/re");
-          setCurrentUser(response.data);
-          setIsAuthenticated(true);
+          if (response.data.isAuthenticated) {
+            setCurrentUser(response.data);
+            setIsAuthenticated(true);
+          } else {
+            setIsAuthenticated(false);
+          }
         } else {
           console.log("No token cookie.");
         }
@@ -109,6 +118,6 @@ export function useAuth() {
   }
   return {
     ...context,
-    isAuthenticated: context.currentUser !== null,
+    // isAuthenticated: context.currentUser !== null,
   };
 }

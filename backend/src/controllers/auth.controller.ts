@@ -168,14 +168,17 @@ export async function getAuthenticatedUser(
   res: Response,
   next: NextFunction
 ): Promise<void> {
+  console.log("Got request!");
+
   try {
-    const { accessToken } = req.cookies;
-    if (!accessToken) {
+    const { token } = req.cookies;
+    if (!token) {
       res.status(401).json({ message: "Not Authenticated" });
+      console.log("Did not get a token!");
     }
 
     const decodedToken = jwt.verify(
-      accessToken,
+      token,
       process.env.JWT_SECRET as string
     ) as MyJwtPayload;
 
@@ -185,16 +188,19 @@ export async function getAuthenticatedUser(
 
       if (!user) {
         res.status(401).json({ message: "User not found." });
+        console.log("Could not find user.");
       }
 
       // Return the user's data, but remove the password field for security
       if (user) {
         const { password_hash, ...rest } = user;
         res.status(200).json(rest);
+        console.log("Authenticated!");
       }
     } else {
       // Handle the case where the token is invalid
       res.status(401).json({ message: "Invalid token" });
+      console.log("Invalid token");
     }
   } catch (error) {
     next(error);

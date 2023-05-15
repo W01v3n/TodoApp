@@ -3,7 +3,7 @@ import Navbar from "./components/NotAuthenticated/Navbar/Navbar";
 import routes from "./routes";
 import Footer from "./pages/GeneralSections/Footer";
 import { AuthProvider } from "./components/context/AuthContext";
-import ProtectedComponent from "./components/ProtectedComponent";
+import ProtectedRoute from "./components/ProtectedComponent";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
               path={route.path}
               element={
                 route.isProtected ? (
-                  <ProtectedComponent component={route.component} />
+                  <ProtectedRoute component={route.component} />
                 ) : (
                   <route.component />
                 )

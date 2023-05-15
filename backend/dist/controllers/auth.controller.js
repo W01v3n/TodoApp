@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.refreshAccessToken = exports.userLogin = exports.registerUser = void 0;
+exports.getAuthenticatedUser = exports.refreshAccessToken = exports.userLogin = exports.registerUser = void 0;
 const auth_utils_1 = require("../utils/auth.utils");
 const user_repository_1 = require("../repositories/user.repository");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -140,3 +140,37 @@ async function refreshAccessToken(req, res, next) {
     }
 }
 exports.refreshAccessToken = refreshAccessToken;
+async function getAuthenticatedUser(req, res, next) {
+    console.log("Got request!");
+    try {
+        const { token } = req.cookies;
+        if (!token) {
+            res.status(401).json({ message: "Not Authenticated" });
+            console.log("Did not get a token!");
+        }
+        const decodedToken = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+        if (typeof decodedToken !== "string") {
+            const userId = decodedToken.userId;
+            const user = await (0, user_repository_1.getUserById)(userId);
+            if (!user) {
+                res.status(401).json({ message: "User not found." });
+                console.log("Could not find user.");
+            }
+            // Return the user's data, but remove the password field for security
+            if (user) {
+                const { password_hash, ...rest } = user;
+                res.status(200).json(rest);
+                console.log("Authenticated!");
+            }
+        }
+        else {
+            // Handle the case where the token is invalid
+            res.status(401).json({ message: "Invalid token" });
+            console.log("Invalid token");
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+}
+exports.getAuthenticatedUser = getAuthenticatedUser;

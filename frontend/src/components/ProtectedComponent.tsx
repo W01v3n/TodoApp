@@ -7,14 +7,15 @@ type ProtectedComponentProps = RouteProps & {
 };
 
 function ProtectedComponent({ component: Component }: ProtectedComponentProps) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       navigate("/login");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isLoading, isAuthenticated, navigate]);
 
   if (isAuthenticated) {
     return <Component />;

@@ -27,6 +27,7 @@ instance.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       originalRequest.url !== "/auth/refresh-token" &&
+      originalRequest.url !== "/auth/re" &&
       originalRequest.url !== "/users/login"
     ) {
       // We only want to retry once, so we use the _retry property to keep track of whether we've already retried this request.

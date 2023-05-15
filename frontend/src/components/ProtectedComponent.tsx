@@ -18,7 +18,11 @@ function ProtectedComponent({ component: Component }: ProtectedComponentProps) {
   }, [isLoading, isAuthenticated, navigate]);
 
   if (isAuthenticated) {
+    console.log("User is authenticated");
+
     return <Component />;
+  } else {
+    console.log("User is not authenticated");
   }
 
   return null;

@@ -1,6 +1,6 @@
 // Import necessary packages and components.
-import React, { createContext, useState, useEffect, useContext } from "react";
-import { useCookies, withCookies } from "react-cookie";
+import { createContext, useState, useEffect, useContext } from "react";
+import { useCookies } from "react-cookie";
 import { RouteProps } from "react-router-dom";
 import api from "../../services/api";
 
@@ -44,11 +44,17 @@ export const AuthProvider = ({ children }: RouteProps) => {
   useEffect(() => {
     const checkAuthenticatedUser = async () => {
       try {
-        const response = await api.get("/auth/re");
-        setCurrentUser(response.data);
+        if (cookies) {
+          const response = await api.get("/auth/re");
+          setCurrentUser(response.data);
+          setIsAuthenticated(true);
+        } else {
+          console.log("No token cookie.");
+        }
       } catch (error) {
         console.log(error);
         setCurrentUser(null);
+        setIsAuthenticated(false);
         removeCookie("token");
       } finally {
         setIsLoading(false);
@@ -56,7 +62,7 @@ export const AuthProvider = ({ children }: RouteProps) => {
     };
 
     checkAuthenticatedUser();
-  }, []);
+  }, [cookies, isAuthenticated, isLoading]);
 
   // The login function makes a POST request to the /auth/login endpoint with the email and password.
   // If the login is successful, it updates the current user.

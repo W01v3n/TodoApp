@@ -85,7 +85,10 @@ export async function userLogin(
       console.log(refreshToken);
 
       // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
-      res.cookie("isAuthenticated", true);
+      res.cookie("isAuthenticated", true, {
+        httpOnly: false,
+        maxAge: 60 * 60 * 1000,
+      });
 
       res.cookie("token", token, {
         httpOnly: true,

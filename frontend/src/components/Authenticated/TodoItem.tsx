@@ -22,7 +22,7 @@ function TodoItem({ title, content, parentIsOpen, onDelete }: TodoItemProps) {
 
   return (
     <div className="pt-2 font-light shadow shadow-blue-500">
-      <div className="grid-rows-auto mx-2 grid grid-cols-2 items-center gap-2 md:mx-5">
+      <div className="grid-rows-auto mx-2 grid grid-cols-2 items-center gap-4 md:mx-5">
         <h3 className="col-span-2 mt-2 flex flex-grow flex-wrap justify-center break-words">
           {title}
         </h3>

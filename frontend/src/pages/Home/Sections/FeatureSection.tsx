@@ -10,11 +10,11 @@ function FeatureSection() {
         Features
       </h1>
       <div className="features grid grid-cols-1 md:grid-cols-9 md:grid-rows-4 md:pt-20">
-        <div className="feature-item grid text-center text-3xl font-extralight shadow-lg shadow-gray-200 md:col-start-2 md:col-end-5 md:grid-cols-2 md:px-10 md:text-4xl">
+        <div className="feature-item grid text-center text-3xl font-extralight shadow-lg shadow-gray-200 md:col-start-2 md:col-end-5 md:grid-cols-2 md:px-10 md:text-4xl xl:shadow-gray-300">
           <h3 className="my-10 md:mt-16">Have Your Own Space</h3>
           <img src={tasks} alt="Have-Your-Own-Space" />
         </div>
-        <div className="feature-item grid text-center text-3xl font-extralight shadow-lg shadow-gray-200 md:col-start-6 md:col-end-9 md:row-start-2 md:row-end-2 md:grid-cols-2 md:px-10 md:text-4xl">
+        <div className="feature-item grid text-center text-3xl font-extralight shadow-lg shadow-gray-200 md:col-start-6 md:col-end-9 md:row-start-2 md:row-end-2 md:grid-cols-2 md:px-10 md:text-4xl xl:shadow-gray-300">
           <img
             className="order-2 md:order-1"
             src={addNextTask}
@@ -24,11 +24,11 @@ function FeatureSection() {
             Create Your Tasks
           </h3>
         </div>
-        <div className="feature-item grid text-center text-3xl font-extralight shadow-lg shadow-gray-200 md:col-start-2 md:col-end-5 md:row-start-3 md:row-end-3 md:grid-cols-2 md:px-10 md:text-4xl">
+        <div className="feature-item grid text-center text-3xl font-extralight shadow-lg shadow-gray-200 md:col-start-2 md:col-end-5 md:row-start-3 md:row-end-3 md:grid-cols-2 md:px-10 md:text-4xl xl:shadow-gray-300">
           <h3 className="my-10 md:mt-16">Complete Your Tasks</h3>
           <img src={completeTask} alt="Have-Your-Own-Space" />
         </div>
-        <div className="feature-item grid text-center text-3xl font-extralight shadow-lg shadow-gray-200 md:col-start-6 md:col-end-9 md:row-start-4 md:row-end-4 md:grid-cols-2 md:px-10 md:text-4xl">
+        <div className="feature-item grid text-center text-3xl font-extralight shadow-lg shadow-gray-200 md:col-start-6 md:col-end-9 md:row-start-4 md:row-end-4 md:grid-cols-2 md:px-10 md:text-4xl xl:shadow-gray-300">
           <img
             className="order-2 md:order-1"
             src={yourSpace}

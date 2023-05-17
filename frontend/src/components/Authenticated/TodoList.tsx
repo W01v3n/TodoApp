@@ -103,15 +103,15 @@ function TodoList({ listName, onDelete }: TodoListProps) {
   }
 
   return (
-    <div className="container mx-20 w-4/6 shadow-md shadow-blue-400 md:m-0 md:w-auto">
-      <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-300 shadow-md shadow-blue-500">
+    <div className="container mx-8 w-5/6 shadow-md shadow-blue-400 md:m-0 md:w-auto">
+      <div className="flex items-center justify-between bg-gradient-to-r from-blue-400 to-blue-300 shadow-md shadow-blue-500">
         <button
           className="m-2 bg-blue-400 p-2 text-white opacity-90 shadow-md shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-600 active:bg-blue-600 active:shadow-lg active:shadow-blue-600"
           onClick={toggleContent}
         >
           {isOpen ? "Close" : "Open"}
         </button>
-        <h3 className="mx-8 inline-block w-80 p-1 text-center text-2xl font-light text-white md:mx-10">
+        <h3 className="mx-auto inline-block w-auto flex-grow truncate p-1 text-center text-2xl font-light text-white">
           {listName}
         </h3>
         <button

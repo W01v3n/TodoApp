@@ -6,7 +6,15 @@ import { newList } from "../../controllers/list.controller";
 import { getAllLists } from "../../controllers/list.controller";
 
 interface NewListFormProps {
-  onSubmit: (listName: string) => void;
+  onSubmit: (list: ITodoListObject) => void;
+}
+
+interface ITodoListObject {
+  createdAt: Date;
+  id: number;
+  name: string;
+  updatedAt: Date;
+  userId: number;
 }
 
 function NewListForm({ onSubmit }: NewListFormProps) {
@@ -18,9 +26,8 @@ function NewListForm({ onSubmit }: NewListFormProps) {
     setListName(name);
   }
 
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    onSubmit(listName);
 
     const userId = currentUser?.id;
     if (userId) {
@@ -30,7 +37,11 @@ function NewListForm({ onSubmit }: NewListFormProps) {
       };
 
       console.log(userId);
-      newList(newlistData);
+      const createdList = await newList(newlistData);
+
+      if (createdList) {
+        onSubmit(createdList);
+      }
     }
   }
 
@@ -61,16 +72,29 @@ function NewListForm({ onSubmit }: NewListFormProps) {
 }
 
 function TodoListsPage() {
-  getAllLists();
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [todoLists, setTodoLists] = useState<Array<string>>([]);
+  const [todoLists, setTodoLists] = useState<Array<ITodoListObject | string>>(
+    []
+  );
 
   function handleNewListButton() {
     setIsFormOpen(!isFormOpen);
   }
 
-  function handleNewListSubmit(listName: string) {
-    setTodoLists((prevLists) => [...prevLists, listName]);
+  async function fetchLists() {
+    const lists = await getAllLists();
+    setTodoLists(lists);
+  }
+
+  function handleNewListSubmit(list: ITodoListObject) {
+    console.log(todoLists);
+
+    if (todoLists) {
+      setTodoLists((prevLists) => [...prevLists, list]);
+    } else {
+      fetchLists();
+    }
+
     setIsFormOpen(false);
   }
 
@@ -80,9 +104,14 @@ function TodoListsPage() {
     );
   }
 
-  // useEffect(() => {
-  //   setTodoLists(getAllLists());
-  // }, todoLists);
+  useEffect(() => {
+    const fetchLists = async () => {
+      const lists = await getAllLists();
+      setTodoLists(lists || []);
+    };
+
+    fetchLists();
+  }, []);
 
   return (
     <div>
@@ -99,13 +128,14 @@ function TodoListsPage() {
       </div>
       {isFormOpen && <NewListForm onSubmit={handleNewListSubmit} />}
       <div className="mb-20 grid grid-cols-1 gap-10 md:mx-14 md:grid-cols-4 md:items-start md:gap-10">
-        {todoLists.map((listName, index) => (
-          <TodoList
-            key={index}
-            listName={listName}
-            onDelete={handleDeleteList}
-          />
-        ))}
+        {todoLists &&
+          todoLists.map((list, index) => (
+            <TodoList
+              key={typeof list !== "string" ? list.id : index}
+              listName={typeof list !== "string" ? list.name : list}
+              onDelete={handleDeleteList}
+            />
+          ))}
       </div>
     </div>
   );

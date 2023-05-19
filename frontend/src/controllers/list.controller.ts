@@ -13,10 +13,12 @@ export async function newList(listData: NewListParams) {
       console.log("No user ID was provided while creating a new list.");
     } else if (response.status == 201) {
       console.log("List created in database!");
+      return response.data;
     }
   } catch (error) {
     console.log(error);
   }
+  return null;
 }
 
 export async function getAllLists() {
@@ -28,7 +30,9 @@ export async function getAllLists() {
     } else if (response.status == 200) {
       console.log("Got all lists.");
       console.log(response.data);
+      return response.data;
     }
+    return null;
   } catch (error) {
     console.log(error);
   }

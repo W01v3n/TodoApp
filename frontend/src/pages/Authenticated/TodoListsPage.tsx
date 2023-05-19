@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import TodoList from "../../components/Authenticated/TodoList";
+import { useAuth } from "../../components/context/AuthContext";
+import { newList } from "../../controllers/list.controller";
+import { getAllLists } from "../../controllers/list.controller";
 
 interface NewListFormProps {
   onSubmit: (listName: string) => void;
 }
 
 function NewListForm({ onSubmit }: NewListFormProps) {
+  const { currentUser } = useAuth();
   const [listName, setListName] = useState("");
 
   function handleListName(event: React.ChangeEvent<HTMLInputElement>) {
@@ -17,6 +21,17 @@ function NewListForm({ onSubmit }: NewListFormProps) {
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     onSubmit(listName);
+
+    const userId = currentUser?.id;
+    if (userId) {
+      const newlistData = {
+        name: listName,
+        userId: userId,
+      };
+
+      console.log(userId);
+      newList(newlistData);
+    }
   }
 
   return (
@@ -46,6 +61,7 @@ function NewListForm({ onSubmit }: NewListFormProps) {
 }
 
 function TodoListsPage() {
+  getAllLists();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [todoLists, setTodoLists] = useState<Array<string>>([]);
 
@@ -58,17 +74,15 @@ function TodoListsPage() {
     setIsFormOpen(false);
   }
 
-  // function handleDeleteItem(title: string) {
-  //   setTodoItems((prevItems) =>
-  //     prevItems.filter((item) => item.title !== title)
-  //   );
-  // }
-
   function handleDeleteList(listName: string) {
     setTodoLists((prevLists) =>
       prevLists.filter((nameOfList) => nameOfList !== listName)
     );
   }
+
+  // useEffect(() => {
+  //   setTodoLists(getAllLists());
+  // }, todoLists);
 
   return (
     <div>

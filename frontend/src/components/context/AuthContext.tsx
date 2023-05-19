@@ -6,7 +6,8 @@ import api from "../../services/api";
 
 // Define the structure of a User object.
 interface User {
-  id: string;
+  rest?: User;
+  id: number;
   name: string;
   email: string;
 }
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }: RouteProps) => {
         if (!isObjectEmpty(cookies)) {
           const response = await api.get("/auth/re");
           if (response.data.isAuthenticated) {
-            setCurrentUser(response.data);
+            setCurrentUser(response.data.rest);
             setIsAuthenticated(true);
           } else {
             setIsAuthenticated(false);

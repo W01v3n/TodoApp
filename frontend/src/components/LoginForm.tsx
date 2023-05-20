@@ -10,7 +10,7 @@ import { useAuth } from "./context/AuthContext";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const { isAuthenticated, setIsAuthenticated, setCurrentUser } = useAuth();
 
   function navigateToMyLists() {
     navigate("/lists");
@@ -106,6 +106,8 @@ function LoginForm() {
         // Update the isAuthenticated state
         setIsAuthenticated(true);
         setSubmitStatus("authorized");
+        console.log(response.data.user);
+        setCurrentUser(response.data.user);
 
         // Redirect to My Lists
         navigateToMyLists();

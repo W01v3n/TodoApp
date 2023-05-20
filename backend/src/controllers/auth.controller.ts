@@ -104,9 +104,11 @@ export async function userLogin(
         sameSite: "strict",
       });
 
+      const { password_hash, ...rest } = user;
+
       res
         .status(200)
-        .json({ message: "Logged in successfully.", token: token });
+        .json({ message: "Logged in successfully.", token: token, user: rest });
       console.log({ message: "Logged in successfully.", token: token });
     } else {
       res.status(401).json({ error: "Invalid email or password." });

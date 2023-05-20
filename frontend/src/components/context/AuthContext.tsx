@@ -10,6 +10,8 @@ interface User {
   id: number;
   name: string;
   email: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 // Define the structure of the authentication context.

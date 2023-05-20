@@ -1,11 +1,19 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
 import { TextField } from "@mui/material";
+import {
+  createNewItem,
+  getAllItemsByListId,
+  deleteItem,
+} from "../../controllers/item.controller";
 
 interface TodoItemProps {
+  id?: number;
   title: string;
   content?: string;
   parentIsOpen: boolean;
+  listId: number;
+  completed: boolean;
 }
 
 interface ITodoListObject {
@@ -16,16 +24,27 @@ interface ITodoListObject {
   userId: number;
 }
 
+interface ITodoItemObject {
+  createdAt: Date;
+  updatedAt: Date;
+  id?: number;
+  title: string;
+  content?: string;
+  completed: boolean;
+  list_id: number;
+}
+
 interface TodoListProps {
   list: ITodoListObject;
   onDelete: (list: ITodoListObject) => void;
 }
 
 interface NewItemFormProps {
+  listId: number;
   onSubmit: (list: TodoItemProps) => void;
 }
 
-function NewItemForm({ onSubmit }: NewItemFormProps) {
+function NewItemForm({ onSubmit, listId }: NewItemFormProps) {
   const [itemName, setItemName] = useState("");
   const [itemContent, setItemContent] = useState("");
 
@@ -39,14 +58,29 @@ function NewItemForm({ onSubmit }: NewItemFormProps) {
     setItemContent(content);
   }
 
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
     const newItem: TodoItemProps = {
       title: itemName,
       content: itemContent,
       parentIsOpen: true,
+      completed: false,
+      listId: listId,
     };
-    event.preventDefault();
-    onSubmit(newItem);
+
+    const newItemData = {
+      title: itemName,
+      content: itemContent,
+      completed: false,
+      listId: listId,
+    };
+
+    const createdItem = await createNewItem(newItemData);
+
+    if (createdItem) {
+      onSubmit(newItem); // Need the parent is open here, not in the database.
+    }
+
     setItemName("");
     setItemContent("");
   }
@@ -96,8 +130,9 @@ function TodoList({ list, onDelete }: TodoListProps) {
     setIsNewListFormOpen(false);
   }
 
-  function handleNewItemSubmit(newItem: TodoItemProps) {
-    setTodoItems((prevItems) => [...prevItems, newItem]);
+  function handleNewItemSubmit() {
+    // setTodoItems((prevItems) => [...prevItems, newItem]);
+    fetchItemsByListId();
     setIsNewListFormOpen(!isNewListFormOpen);
   }
 
@@ -105,11 +140,31 @@ function TodoList({ list, onDelete }: TodoListProps) {
     setIsNewListFormOpen(!isNewListFormOpen);
   }
 
-  function handleDeleteItem(title: string) {
-    setTodoItems((prevItems) =>
-      prevItems.filter((item) => item.title !== title)
-    );
+  async function handleDeleteItem(itemId: number) {
+    if (itemId) {
+      const response = await deleteItem(list.id, itemId);
+
+      if (response.deleted) {
+        setTodoItems((prevItems) =>
+          prevItems.filter((existingItem) => existingItem.id !== itemId)
+        );
+      }
+    }
   }
+
+  async function fetchItemsByListId() {
+    const items = await getAllItemsByListId(list.id);
+    setTodoItems(items);
+  }
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const items = await getAllItemsByListId(list.id);
+      setTodoItems(items || []);
+    };
+
+    fetchItems();
+  }, []);
 
   return (
     <div className="container mx-8 w-5/6 shadow-md shadow-blue-400 md:m-0 md:w-auto">
@@ -136,11 +191,15 @@ function TodoList({ list, onDelete }: TodoListProps) {
           isOpen ? "max-h-[128rem] opacity-100" : "max-h-0 opacity-0"
         } text-center text-lg transition-all duration-300 ease-in`}
       >
-        {todoItems.map((item, index) => (
+        {todoItems.map((item) => (
           <TodoItem
-            key={index}
+            key={item.id}
+            id={item.id ? item.id : null}
             title={item.title}
             content={item.content}
+            completed={item.completed}
+            listId={item.listId}
+            itemId={item.id}
             parentIsOpen={isOpen ? true : false}
             onDelete={handleDeleteItem}
           />
@@ -158,7 +217,7 @@ function TodoList({ list, onDelete }: TodoListProps) {
               New Item
             </button>
             {isNewListFormOpen && (
-              <NewItemForm onSubmit={handleNewItemSubmit} />
+              <NewItemForm listId={list.id} onSubmit={handleNewItemSubmit} />
             )}
           </div>
         </li>

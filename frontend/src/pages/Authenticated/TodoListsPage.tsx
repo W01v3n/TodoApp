@@ -52,7 +52,7 @@ function NewListForm({ onSubmit }: NewListFormProps) {
         userId: userId,
       };
 
-      console.log(userId);
+      // console.log(userId);
       const createdList = await newList(newlistData);
 
       if (createdList) {
@@ -101,7 +101,7 @@ function TodoListsPage() {
   }
 
   function handleNewListSubmit(list: ITodoListObject) {
-    console.log(todoLists);
+    // console.log(todoLists);
 
     if (todoLists) {
       setTodoLists((prevLists) => [...prevLists, list]);

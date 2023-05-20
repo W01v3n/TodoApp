@@ -1,13 +1,23 @@
 import { useEffect, useState } from "react";
 
 interface TodoItemProps {
+  id: number | null;
   title: string;
   content?: string;
   parentIsOpen: boolean;
-  onDelete: (title: string) => void;
+  completed: boolean;
+  listId: number;
+  itemId?: number;
+  onDelete: (itemId: number) => void;
 }
 
-function TodoItem({ title, content, parentIsOpen, onDelete }: TodoItemProps) {
+function TodoItem({
+  title,
+  content,
+  parentIsOpen,
+  onDelete,
+  id,
+}: TodoItemProps) {
   const [isOpen, setisOpen] = useState(false);
 
   useEffect(() => {
@@ -35,7 +45,7 @@ function TodoItem({ title, content, parentIsOpen, onDelete }: TodoItemProps) {
           </button>
           <button
             className="bg-red-500 px-1 py-1 text-base text-white opacity-90 shadow-md shadow-red-500 transition-all duration-150 hover:shadow-lg hover:shadow-red-600 active:bg-red-600 active:shadow-lg active:shadow-red-700"
-            onClick={() => onDelete(title)}
+            onClick={() => onDelete(id ? id : 0)}
           >
             Delete
           </button>

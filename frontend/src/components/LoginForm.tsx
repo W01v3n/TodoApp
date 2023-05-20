@@ -106,7 +106,7 @@ function LoginForm() {
         // Update the isAuthenticated state
         setIsAuthenticated(true);
         setSubmitStatus("authorized");
-        console.log(response.data.user);
+        // console.log(response.data.user);
         setCurrentUser(response.data.user);
 
         // Redirect to My Lists

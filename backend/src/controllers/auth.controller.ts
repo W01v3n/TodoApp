@@ -61,7 +61,6 @@ export async function userLogin(
     // Check to see that the data was received (true/false) and that the password is correct.
     if (user && (await verifyPassword(password, user.password_hash))) {
       // If everything checks out (logged in successfully), create a token.
-      console.log(`USER ID: ${user.id}`);
 
       const tokenExpirationTime = Math.floor(Date.now() / 1000) + 60 * 60; // Expires in 1 hour
       const refreshTokenExpirationTime =
@@ -80,9 +79,6 @@ export async function userLogin(
         process.env.JWT_REFRESH_TOKEN_SECRET as string,
         { expiresIn: refreshTokenExpirationTime }
       );
-
-      console.log(token);
-      console.log(refreshToken);
 
       // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
       res.cookie("isAuthenticated", true, {
@@ -109,10 +105,8 @@ export async function userLogin(
       res
         .status(200)
         .json({ message: "Logged in successfully.", token: token, user: rest });
-      console.log({ message: "Logged in successfully.", token: token });
     } else {
       res.status(401).json({ error: "Invalid email or password." });
-      console.log({ error: "Invalid email or password." });
     }
   } catch (error) {
     next(error);
@@ -141,7 +135,6 @@ export async function refreshAccessToken(
       const user = await getUserById(userId);
 
       if (!user) {
-        console.log("User not found");
         res.status(401).json({ message: "User not found." });
       }
 
@@ -175,8 +168,6 @@ export async function getAuthenticatedUser(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  console.log("Got request!");
-
   try {
     const { token, isAuthenticated } = req.cookies;
     if (!isAuthenticated) {
@@ -184,7 +175,6 @@ export async function getAuthenticatedUser(
     }
     if (!token) {
       res.status(401).json({ message: "No token was provided!" });
-      console.log("Did not get a token!");
     }
 
     const decodedToken = jwt.verify(
@@ -198,19 +188,16 @@ export async function getAuthenticatedUser(
 
       if (!user) {
         res.status(401).json({ message: "User not found." });
-        console.log("Could not find user.");
       }
 
       // Return the user's data, but remove the password field for security
       if (user) {
         const { password_hash, ...rest } = user;
         res.status(200).json({ rest, isAuthenticated: true });
-        console.log("Authenticated!");
       }
     } else {
       // Handle the case where the token is invalid
       res.status(401).json({ message: "Invalid token" });
-      console.log("Invalid token");
     }
   } catch (error) {
     next(error);

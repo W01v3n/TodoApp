@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import TodoList from "../../components/Authenticated/TodoList";
 import { useAuth } from "../../components/context/AuthContext";
-import {
-  newList,
-  getAllLists,
-  deleteList,
-} from "../../controllers/list.controller";
+import { newList, getAllLists, deleteList } from "../../services/list.service";
 
 interface NewListFormProps {
   onSubmit: (list: ITodoListObject) => void;

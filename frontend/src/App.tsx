@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/NotAuthenticated/Navbar/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 import routes from "./routes";
 import Footer from "./pages/GeneralSections/Footer";
 import { AuthProvider } from "./components/context/AuthContext";

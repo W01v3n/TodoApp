@@ -5,7 +5,7 @@ import {
   createNewItem,
   getAllItemsByListId,
   deleteItem,
-} from "../../controllers/item.controller";
+} from "../../services/item.service";
 
 interface TodoItemProps {
   id?: number;
@@ -22,16 +22,6 @@ interface ITodoListObject {
   name: string;
   updatedAt: Date;
   userId: number;
-}
-
-interface ITodoItemObject {
-  createdAt: Date;
-  updatedAt: Date;
-  id?: number;
-  title: string;
-  content?: string;
-  completed: boolean;
-  list_id: number;
 }
 
 interface TodoListProps {

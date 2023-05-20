@@ -1,16 +1,6 @@
-import api from "../services/api";
+import api from "./api";
 
 interface NewItemParams {
-  listId: number;
-  title: string;
-  content?: string;
-  completed: boolean;
-}
-
-interface ExistingItemParams {
-  createdAt: Date;
-  updatedAt: Date;
-  id?: number;
   listId: number;
   title: string;
   content?: string;

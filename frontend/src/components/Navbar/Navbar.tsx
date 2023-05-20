@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import NavLink from "./NavLink";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   return (
     <nav className="bg-stone-100 px-4 py-2 shadow-md shadow-gray-300">
@@ -33,8 +35,8 @@ function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               <NavLink to="/" label="Home" />
-              <NavLink to="/login" label="Login" />
-              <NavLink to="/register" label="Register" />
+              {!isAuthenticated && <NavLink to="/login" label="Login" />}
+              {!isAuthenticated && <NavLink to="/register" label="Register" />}
               <NavLink to="/lists" label="My Lists" />
             </ul>
           </div>

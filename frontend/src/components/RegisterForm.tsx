@@ -1,8 +1,10 @@
 import { TextField } from "@mui/material";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
 function RegisterForm() {
   // User data states
@@ -11,6 +13,17 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  // Check if user is already logged in
+  function navigateToMyLists() {
+    navigate("/lists");
+  }
+
+  useEffect(() => {
+    isAuthenticated && navigateToMyLists();
+  }, [isAuthenticated]);
 
   // Form submission state
   const [submitStatus, setSubmitStatus] = useState<
@@ -115,16 +128,6 @@ function RegisterForm() {
       setFormLoading(false);
     }
   }
-
-  // function wait() {
-  //   return new Promise<void>((resolve) => {
-  //     setSubmitStatus("loading");
-  //     setTimeout(() => {
-  //       setSubmitStatus("success");
-  //       resolve();
-  //     }, 5000);
-  //   });
-  // }
 
   return (
     <>

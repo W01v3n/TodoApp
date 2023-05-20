@@ -29,7 +29,7 @@ function Navbar() {
             <ul
               className={`${
                 isMenuOpen
-                  ? "translate-y-2 opacity-100 transition-all duration-500 ease-in-out" //hidden class is not animatable.
+                  ? "translate-y-2 bg-white opacity-100 transition-all duration-500 ease-in-out" //hidden class is not animatable.
                   : "pointer-events-none translate-y-0 opacity-0 transition-all duration-500 ease-in-out md:pointer-events-auto md:flex md:scale-100 md:transform-none md:space-x-4 md:opacity-100"
               } absolute right-0 top-3 w-16 flex-col py-2  md:static md:w-auto md:flex-row md:space-x-4 md:py-0`}
               onClick={() => setIsMenuOpen(false)}

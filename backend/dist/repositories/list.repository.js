@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findListsByUserId = exports.createList = void 0;
+exports.deleteListById = exports.findListsByUserId = exports.createList = void 0;
 const connectionPool_1 = __importDefault(require("../database/connectionPool"));
 const helpers_1 = require("../utils/helpers");
 async function createList(list, userId) {
@@ -62,3 +62,18 @@ async function findListsByUserId(userId) {
     }
 }
 exports.findListsByUserId = findListsByUserId;
+async function deleteListById(listId) {
+    const query = "DELETE FROM todo_lists WHERE id = ?";
+    const queryParams = [listId];
+    try {
+        const [result] = await connectionPool_1.default.query(query, queryParams);
+        if ((0, helpers_1.isOkPacket)(result)) {
+            return result.affectedRows > 0;
+        }
+    }
+    catch (error) {
+        console.error("Error finding this list.");
+    }
+    return null;
+}
+exports.deleteListById = deleteListById;

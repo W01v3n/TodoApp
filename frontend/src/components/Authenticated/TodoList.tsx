@@ -7,9 +7,18 @@ interface TodoItemProps {
   content?: string;
   parentIsOpen: boolean;
 }
+
+interface ITodoListObject {
+  createdAt: Date;
+  id: number;
+  name: string;
+  updatedAt: Date;
+  userId: number;
+}
+
 interface TodoListProps {
-  listName: string;
-  onDelete: (listName: string) => void;
+  list: ITodoListObject;
+  onDelete: (list: ITodoListObject) => void;
 }
 
 interface NewItemFormProps {
@@ -77,7 +86,7 @@ function NewItemForm({ onSubmit }: NewItemFormProps) {
   );
 }
 
-function TodoList({ listName, onDelete }: TodoListProps) {
+function TodoList({ list, onDelete }: TodoListProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isNewListFormOpen, setIsNewListFormOpen] = useState(false);
   const [todoItems, setTodoItems] = useState<Array<TodoItemProps>>([]);
@@ -112,11 +121,11 @@ function TodoList({ listName, onDelete }: TodoListProps) {
           {isOpen ? "Close" : "Open"}
         </button>
         <h3 className="mx-auto inline-block w-auto flex-grow truncate p-1 text-center text-2xl font-light text-white">
-          {listName}
+          {typeof list !== "string" && list.name}
         </h3>
         <button
           className="m-2 bg-red-500 px-1 py-1 text-base text-white opacity-90 shadow-md shadow-red-500 transition-all duration-150 hover:shadow-lg hover:shadow-red-600 active:bg-red-600 active:shadow-lg active:shadow-red-700"
-          onClick={() => onDelete(listName)}
+          onClick={() => onDelete(list)}
         >
           Delete
         </button>

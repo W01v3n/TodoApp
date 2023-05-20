@@ -37,3 +37,17 @@ export async function getAllLists() {
     console.log(error);
   }
 }
+
+export async function deleteList(listId: number) {
+  try {
+    const response = await api.delete(`/lists/${listId}`);
+    if (response.status == 404) {
+      console.log("List could not be found.");
+    } else if (response.status == 200) {
+      console.log("Deleted list");
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -73,3 +73,18 @@ export async function findListsByUserId(
     return null;
   }
 }
+
+export async function deleteListById(listId: number) {
+  const query = "DELETE FROM todo_lists WHERE id = ?";
+  const queryParams = [listId];
+  try {
+    const [result] = await pool.query<RowDataPacket[]>(query, queryParams);
+    if (isOkPacket(result)) {
+      return result.affectedRows > 0;
+    }
+  } catch (error) {
+    console.error("Error finding this list.");
+  }
+
+  return null;
+}

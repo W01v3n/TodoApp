@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import ITodoList from "../interfaces/itodoList.interface";
-import { createList, findListsByUserId } from "../repositories/list.repository";
+import {
+  createList,
+  findListsByUserId,
+  deleteListById,
+} from "../repositories/list.repository";
 import AuthRequest from "../interfaces/authRequest.type";
 
 export async function createTodoList(
@@ -51,6 +55,33 @@ export async function getTodoLists(
     const lists = await findListsByUserId(userId);
     // Return successful response if the lists have been found successfully
     res.status(200).json(lists);
+    // Report error to error handling middleware
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteTodoList(
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  // TODOS
+  // save in consts list name from the request body
+  if (!req.userId) {
+    res.status(401).json({ error: "User ID is missing." });
+  }
+  const listId = Number(req.params.listId);
+
+  try {
+    // Delete the list from the database
+    const deleted = await deleteListById(listId);
+    // Return successful response if the list has been deleted successfully
+    if (deleted) {
+      res.status(200).json({ message: "List deleted successfully." });
+    } else {
+      res.status(404).json({ message: "List not found." });
+    }
     // Report error to error handling middleware
   } catch (error) {
     next(error);

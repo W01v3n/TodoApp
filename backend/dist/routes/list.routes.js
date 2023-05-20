@@ -9,4 +9,5 @@ const auth_middleware_1 = __importDefault(require("../middleware/auth.middleware
 const router = (0, express_1.Router)();
 router.post("/lists", auth_middleware_1.default, list_controller_1.createTodoList);
 router.get("/lists", auth_middleware_1.default, list_controller_1.getTodoLists);
+router.delete("/lists/:listId", auth_middleware_1.default, list_controller_1.deleteTodoList);
 exports.default = router;

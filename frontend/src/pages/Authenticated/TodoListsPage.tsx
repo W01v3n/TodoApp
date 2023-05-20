@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import TodoList from "../../components/Authenticated/TodoList";
 import { useAuth } from "../../components/context/AuthContext";
-import { newList } from "../../controllers/list.controller";
-import { getAllLists } from "../../controllers/list.controller";
+import {
+  newList,
+  getAllLists,
+  deleteList,
+} from "../../controllers/list.controller";
 
 interface NewListFormProps {
   onSubmit: (list: ITodoListObject) => void;
@@ -20,6 +23,14 @@ interface ITodoListObject {
 function NewListForm({ onSubmit }: NewListFormProps) {
   const { currentUser } = useAuth();
   const [listName, setListName] = useState("");
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
+
+  useEffect(() => {
+    // Check if the currentUser is loaded
+    if (currentUser) {
+      setIsUserLoaded(true);
+    }
+  }, [currentUser]);
 
   function handleListName(event: React.ChangeEvent<HTMLInputElement>) {
     const name = event.target.value;
@@ -29,7 +40,12 @@ function NewListForm({ onSubmit }: NewListFormProps) {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
+    if (!isUserLoaded) {
+      return;
+    }
+
     const userId = currentUser?.id;
+
     if (userId) {
       const newlistData = {
         name: listName,
@@ -73,9 +89,7 @@ function NewListForm({ onSubmit }: NewListFormProps) {
 
 function TodoListsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [todoLists, setTodoLists] = useState<Array<ITodoListObject | string>>(
-    []
-  );
+  const [todoLists, setTodoLists] = useState<Array<ITodoListObject>>([]);
 
   function handleNewListButton() {
     setIsFormOpen(!isFormOpen);
@@ -98,9 +112,10 @@ function TodoListsPage() {
     setIsFormOpen(false);
   }
 
-  function handleDeleteList(listName: string) {
+  function handleDeleteList(list: ITodoListObject) {
+    deleteList(list.id);
     setTodoLists((prevLists) =>
-      prevLists.filter((nameOfList) => nameOfList !== listName)
+      prevLists.filter((nameOfList) => nameOfList !== list)
     );
   }
 
@@ -132,7 +147,8 @@ function TodoListsPage() {
           todoLists.map((list, index) => (
             <TodoList
               key={typeof list !== "string" ? list.id : index}
-              listName={typeof list !== "string" ? list.name : list}
+              list={list}
+              // listName={typeof list !== "string" ? list.name : list}
               onDelete={handleDeleteList}
             />
           ))}

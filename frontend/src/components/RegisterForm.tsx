@@ -21,6 +21,10 @@ function RegisterForm() {
     navigate("/lists");
   }
 
+  function navigateToLogin() {
+    navigate("/login");
+  }
+
   useEffect(() => {
     isAuthenticated && navigateToMyLists();
   }, [isAuthenticated]);
@@ -118,11 +122,12 @@ function RegisterForm() {
       // Send user data to backend
       const response = await api.post("/users/register", userData);
       console.log(response);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setSubmitStatus("success");
+      if (response.status == 201) {
+        setSubmitStatus("success");
+        navigateToLogin();
+      }
     } catch (error) {
       console.log(error);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       setSubmitStatus("error");
     } finally {
       setFormLoading(false);

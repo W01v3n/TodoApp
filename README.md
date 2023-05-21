@@ -126,4 +126,4 @@ Your contributions are welcome. Feel free to make a pull request or raise an iss
 This project is licensed under the MIT License.
 
 ## Acknowledgments
-Tal Sabadia - Full stack developer. Building web applications from scratch.
+Tal Sabadia - Junior Full stack developer.

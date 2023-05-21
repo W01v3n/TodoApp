@@ -6,16 +6,16 @@ THYNKSO is an authenticated todo application, where each user has his own lists 
 ## About
 This app was created as a learning project. I just learned TypeScript, React, and the whole MERN (with SQL), and this is my beginner project, built from scratch entirely on my own.
 
-![image](https://github.com/W01v3n/TodoApp/assets/69687310/96760896-339a-4abd-8565-288277aae3f6)
+![image](https://github.com/W01v3n/TodoApp/assets/69687310/cfb6c30a-18ec-4205-8d3e-6ef0d8211230)
 
 ## Features
 - User authentication
 - Users can create their own lists
 - Users can add items to their lists
 
-![image](https://github.com/W01v3n/TodoApp/assets/69687310/825a76b9-11d6-4738-9a7b-801a56c811f5)
+![image](https://github.com/W01v3n/TodoApp/assets/69687310/f6a9d9d2-98ba-4d02-b4aa-1045b796f9f7)
 
-![image](https://github.com/W01v3n/TodoApp/assets/69687310/78f61d0b-5d6a-48c8-96d8-9d7d8e54da57)
+![image](https://github.com/W01v3n/TodoApp/assets/69687310/ffba5120-3cf3-45fb-ba46-34b47581665a)
 
 
 ## Getting Started

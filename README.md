@@ -1,7 +1,7 @@
 # THYNKSO - TodoApp
 
 ## Overview
-THYNKSO is an authenticated todo application, where each user has his own lists and his own items. The complete app and fancy styling is on its way. Contributors are welcome, feel free to contribute.
+THYNKSO is an authenticated todo application, where each user has his own lists and his own items. Contributors are welcome, feel free to contribute.
 
 ## About
 This app was created as a learning project. I just learned TypeScript, React, and the whole MERN (with SQL), and this is my beginner project, built from scratch entirely on my own.

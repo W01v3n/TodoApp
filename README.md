@@ -31,7 +31,7 @@ Here is how you can set up the project locally for development.
 git clone https://github.com/W01v3n/TodoApp.git
 ```
 #### Adjust Ports
-Make sure to edit the listen and access ports on the backend api and the frontend `api.ts` according to your system.
+Make sure to edit the listen and access ports on the backend api at `app.ts` or your .`env` and the frontend `api.ts` according to your system.
 
 #### Install
 ```bash
@@ -40,6 +40,18 @@ npm install
 cd TodoApp/frontend
 npm install
 ```
+#### .env file
+```env
+API_PORT='YOUR_PORT'
+JWT_SECRET='YOUR_ACCESS_TOKEN_SECRET'
+JWT_REFRESH_TOKEN_SECRET='YOUR_REFRESH_TOKEN_SECRET'
+DB_HOST='YOUR_DB_HOST'
+DB_NAME='YOUR_DB'
+DB_USER='YOUR_DB_USER'
+DB_PASSWORD='YOUR_DB_PASSWORD'
+DB_CONNECTION_LIMIT='10
+```
+
 #### Build
 ```bash
 cd TodoApp/backend

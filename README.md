@@ -1,7 +1,9 @@
 # THYNKSO - TodoApp
 
 ## Overview
-THYNKSO is an authenticated todo application where each user has his own lists and his own items. The application was built using the MERN stack (MongoDB, Express.js, React.js, Node.js) and SQL for database management. As a beginner project, it was constructed from scratch to apply the knowledge gained from learning TypeScript, React, and the MERN stack. Contributions are always welcome and appreciated!
+THYNKSO is an authenticated todo application where each user has his own lists and his own items. The application was built using the MERN stack (MongoDB, Express.js, React.js, Node.js) and SQL for database management.
+It is very important to mention that this app was not built throughout an online course, it was built entirely from scratch.
+As a beginner project, it was constructed from scratch to apply the knowledge gained from learning TypeScript, React, and the MERN stack. Contributions are always welcome and appreciated!
 
 ![image](https://github.com/W01v3n/TodoApp/assets/69687310/49fb8369-fbcc-4db4-bfa4-b4a4e0f637b3)
 

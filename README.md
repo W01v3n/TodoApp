@@ -1,10 +1,7 @@
 # THYNKSO - TodoApp
 
 ## Overview
-THYNKSO is an authenticated todo application, where each user has his own lists and his own items. Contributors are welcome, feel free to contribute.
-
-## About
-This app was created as a learning project. I just learned TypeScript, React, and the whole MERN (with SQL), and this is my beginner project, built from scratch entirely on my own.
+THYNKSO is an authenticated todo application where each user has his own lists and his own items. The application was built using the MERN stack (MongoDB, Express.js, React.js, Node.js) and SQL for database management. As a beginner project, it was constructed from scratch to apply the knowledge gained from learning TypeScript, React, and the MERN stack. Contributions are always welcome and appreciated!
 
 ![image](https://github.com/W01v3n/TodoApp/assets/69687310/49fb8369-fbcc-4db4-bfa4-b4a4e0f637b3)
 
@@ -74,16 +71,18 @@ CREATE TABLE `users` (
 git clone https://github.com/W01v3n/TodoApp.git
 ```
 #### Adjust Ports
-Make sure to edit the listen and access ports on the backend api at `app.ts` or your .`env` and the frontend `api.ts` according to your system.
+You'll need to edit the listen and access ports on the backend API at `app.ts` or your .env file and the frontend api.ts file according to your system. For example, if you want the backend to listen on port 5000, you would adjust the `API_PORT` variable in your .env file like so: `API_PORT='5000'`.
 
-#### Install
+#### Install dependencies
+Navigate to the backend directory with `cd TodoApp/backend` and run `npm install`. Repeat this process for the frontend with `cd TodoApp/frontend` and `npm install`.
 ```bash
 cd TodoApp/backend
 npm install
 cd TodoApp/frontend
 npm install
 ```
-#### .env file
+#### Create a .env file
+Create a .env file in the root of the backend directory. This file should contain the following environment variables:
 ```env
 API_PORT='YOUR_PORT'
 JWT_SECRET='YOUR_ACCESS_TOKEN_SECRET'
@@ -95,7 +94,7 @@ DB_PASSWORD='YOUR_DB_PASSWORD'
 DB_CONNECTION_LIMIT='10
 ```
 
-#### Build
+#### Build the project
 ```bash
 cd TodoApp/backend
 npm run build
@@ -103,11 +102,24 @@ cd TodoApp/frontend
 npm run build
 ```
 
-#### Run Backend
+#### Run the backend
 ```bash
 cd TodoApp/backend
 npm run start
 ```
 
-#### Deploy frontend
+#### Deploy the frontend
 Grab the `dist` directory created from the npm build process on the frontend, and deploy it as a DocumentRoot for a web server.
+
+
+## Contact
+Feel free to reach out to me at sabadiatal@gmail.com if you have any questions or issues.
+
+## Contributing
+Your contributions are welcome. Feel free to make a pull request or raise an issue.
+
+## License
+This project is licensed under the MIT License.
+
+## Acknowledgments
+Tal Sabadia - Full stack developer. Building web applications from scratch.

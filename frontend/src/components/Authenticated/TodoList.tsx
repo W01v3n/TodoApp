@@ -83,6 +83,7 @@ function NewItemForm({ onSubmit, listId }: NewItemFormProps) {
             className="md:col-span-4 md:col-start-3"
             color="primary"
             type="text"
+            inputRef={(input) => input && input.focus()}
             label="Item Name"
             value={itemName}
             required

@@ -152,8 +152,10 @@ export async function refreshAccessToken(
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       });
-
-      res.status(200).json({ newRefreshToken: newToken });
+      if (user) {
+        const { password_hash, ...rest } = user;
+        res.status(200).json({ token: newToken, rest });
+      }
     } else {
       // Handle the case where the token is invalid
       console.log(decodedToken); // Will probably be an error in that case.

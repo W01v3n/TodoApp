@@ -2,7 +2,7 @@ import { TextField } from "@mui/material";
 import { FormEvent, useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
-import api from "../services/api";
+import api from "../services/api.service";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 

@@ -65,6 +65,7 @@ function NewListForm({ onSubmit }: NewListFormProps) {
       <div className="container">
         <TextField
           color="primary"
+          inputRef={(input) => input && input.focus()}
           type="text"
           label="List Name"
           value={listName}

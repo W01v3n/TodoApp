@@ -21,7 +21,6 @@ instance.interceptors.response.use(
   async (error: AxiosError) => {
     // The error object includes the original request configuration. We'll use this to possibly retry the request.
     const originalRequest = error.config as AxiosRequestConfigWithRetry;
-
     // If the error is a 401 Unauthorized error, and the request was not to the refresh-token or login endpoints,
     // then we will try to get a new access token and retry the request.
     if (
@@ -35,6 +34,8 @@ instance.interceptors.response.use(
         originalRequest._retry = true;
 
         try {
+          console.log("Trying to refresh token via axios interceptor!");
+
           // Attempt to refresh the access token.
           const response = await instance.post("/auth/refresh-token");
 

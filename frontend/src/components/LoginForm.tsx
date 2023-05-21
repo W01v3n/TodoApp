@@ -3,7 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
+import api from "../services/api.service";
 import axios from "axios";
 
 import { useAuth } from "./context/AuthContext";

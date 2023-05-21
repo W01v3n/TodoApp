@@ -47,6 +47,7 @@ export async function getTodoLists(
   // save in consts user id from the request body
   if (!req.userId) {
     res.status(401).json({ error: "User ID is missing." });
+    console.log({ error: "User ID is missing." });
   }
   const userId = Number(req.userId);
 

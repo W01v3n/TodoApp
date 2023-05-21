@@ -1,4 +1,5 @@
-import api from "./api";
+import api from "./api.service";
+import { AxiosError } from "axios";
 
 interface NewListParams {
   userId: number;
@@ -12,7 +13,7 @@ export async function newList(listData: NewListParams) {
     if (response.status == 401) {
       console.log("No user ID was provided while creating a new list.");
     } else if (response.status == 201) {
-      console.log("List created in database!");
+      // console.log("List created in database!");
       return response.data;
     }
   } catch (error) {
@@ -25,16 +26,16 @@ export async function getAllLists() {
   // Get all lists from the backend
   try {
     const response = await api.get("/lists");
-    if (response.status == 401) {
-      console.log("No user ID was provided during list fetching");
-    } else if (response.status == 200) {
-      console.log("Got all lists.");
-      console.log(response.data);
-      return response.data;
-    }
-    return null;
+    // console.log("Got all lists.");
+    // console.log(response.data);
+    return response.data;
   } catch (error) {
-    console.log(error);
+    const axiosError = error as AxiosError;
+    if (axiosError.response && axiosError.response.status == 401) {
+      console.log("No user ID was provided during list fetching");
+    } else {
+      console.log(axiosError);
+    }
   }
 }
 
@@ -44,7 +45,7 @@ export async function deleteList(listId: number) {
     if (response.status == 404) {
       console.log("List could not be found.");
     } else if (response.status == 200) {
-      console.log("Deleted list");
+      // console.log("Deleted list");
       return response.data;
     }
   } catch (error) {

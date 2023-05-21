@@ -7,23 +7,27 @@ type ProtectedComponentProps = RouteProps & {
 };
 
 function ProtectedComponent({ component: Component }: ProtectedComponentProps) {
-  const { isAuthenticated, isLoading } = useAuth();
-
+  const { isAuthenticated, isLoading, refreshToken } = useAuth();
   const navigate = useNavigate();
 
   React.useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      navigate("/login");
+      // Try to refresh token before redirecting to /login
+      refreshToken().then(() => {
+        if (!isAuthenticated) {
+          navigate("/login");
+        }
+      });
     }
-  }, [isLoading, isAuthenticated, navigate]);
+  }, [isLoading, isAuthenticated, navigate, refreshToken]);
 
   if (isAuthenticated) {
-    console.log("User is authenticated");
+    // console.log("User is authenticated");
 
     return <Component />;
-  } else {
-    console.log("User is not authenticated");
-  }
+  } // else {
+  //   console.log("User is not authenticated");
+  // }
 
   return null;
 }

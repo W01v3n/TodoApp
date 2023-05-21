@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./api.service";
 
 interface NewItemParams {
   listId: number;
@@ -17,7 +17,7 @@ export async function createNewItem(itemData: NewItemParams) {
     if (response.status == 401) {
       console.log("No list ID was provided while creating a new item.");
     } else if (response.status == 201) {
-      console.log("Item created in database!");
+      // console.log("Item created in database!");
       return response.data;
     }
   } catch (error) {
@@ -33,8 +33,8 @@ export async function getAllItemsByListId(listId: number) {
     if (response.status == 401) {
       console.log("No list ID was provided during items fetching");
     } else if (response.status == 200) {
-      console.log(`Got all items for list id of ${listId}.`);
-      console.log(response.data);
+      // console.log(`Got all items for list id of ${listId}.`);
+      // console.log(response.data);
       return response.data;
     }
     return null;
@@ -49,7 +49,7 @@ export async function deleteItem(listId: number, itemId: number) {
     if (response.status == 404) {
       console.log("Item could not be found.");
     } else if (response.status == 200) {
-      console.log("Deleted item");
+      // console.log("Deleted item");
       return response.data;
     }
   } catch (error) {

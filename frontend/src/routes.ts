@@ -7,7 +7,7 @@ type RouteType = {
   isProtected?: boolean;
 } & RouteProps;
 
-import { HomePage, ListsPage, LoginPage, RegisterPage } from "./pages";
+import { HomePage, TodoListsPage, LoginPage, RegisterPage } from "./pages";
 
 const routes: RouteType[] = [
   {
@@ -17,7 +17,7 @@ const routes: RouteType[] = [
   },
   {
     path: "/lists",
-    component: ListsPage,
+    component: TodoListsPage,
     isProtected: true,
   },
   {

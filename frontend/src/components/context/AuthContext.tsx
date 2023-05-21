@@ -2,7 +2,7 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { useCookies } from "react-cookie";
 import { RouteProps } from "react-router-dom";
-import api from "../../services/api";
+import api from "../../services/api.service";
 
 // Define the structure of a User object.
 interface User {
@@ -24,6 +24,7 @@ interface AuthContextData {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
+  refreshToken: () => Promise<void>;
 }
 
 // Create the context with React's createContext function.
@@ -76,6 +77,25 @@ export const AuthProvider = ({ children }: RouteProps) => {
     checkAuthenticatedUser();
   }, [cookies, isAuthenticated, isLoading]);
 
+  async function refreshToken() {
+    try {
+      const response = await api.post("/auth/refresh-token");
+
+      if (response.data.token) {
+        setCurrentUser(response.data.rest);
+        setCookie("token", response.data.token, { path: "/" });
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setCurrentUser(null);
+      setIsAuthenticated(false);
+      removeCookie("token");
+    }
+  }
+
   // The login function makes a POST request to the /auth/login endpoint with the email and password.
   // If the login is successful, it updates the current user.
   const login = async (email: string, password: string) => {
@@ -104,6 +124,7 @@ export const AuthProvider = ({ children }: RouteProps) => {
         isAuthenticated,
         setCurrentUser,
         setIsAuthenticated,
+        refreshToken,
       }}
     >
       {children}
@@ -121,6 +142,5 @@ export function useAuth() {
   }
   return {
     ...context,
-    // isAuthenticated: context.currentUser !== null,
   };
 }

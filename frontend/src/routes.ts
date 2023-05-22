@@ -8,6 +8,7 @@ type RouteType = {
 } & RouteProps;
 
 import { HomePage, TodoListsPage, LoginPage, RegisterPage } from "./pages";
+import Logout from "./components/Authenticated/Logout";
 
 const routes: RouteType[] = [
   {
@@ -28,10 +29,10 @@ const routes: RouteType[] = [
     path: "/register",
     component: RegisterPage,
   },
-  // {
-  //   path: "/lists/:listName",
-  //   component: ListPage,
-  // },
+  {
+    path: "/logout",
+    component: Logout,
+  },
 ];
 
 export default routes;

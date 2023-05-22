@@ -43,6 +43,8 @@ export const AuthProvider = ({ children }: RouteProps) => {
 
   // Use the useCookies hook to get access to the cookies
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [refreshTokenCookie, setRefreshTokenCookie, removeRefreshTokenCookie] =
+    useCookies(["refreshToken"]);
 
   function isObjectEmpty(object: any) {
     return Object.keys(object).length === 0;
@@ -94,6 +96,7 @@ export const AuthProvider = ({ children }: RouteProps) => {
       setCurrentUser(null);
       setIsAuthenticated(false);
       removeCookie("token");
+      removeRefreshTokenCookie("refreshToken");
     }
   }
 

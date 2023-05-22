@@ -115,6 +115,15 @@ npm run start
 #### Deploy the frontend
 Grab the `dist` directory created from the npm build process on the frontend, and deploy it as a DocumentRoot for a web server.
 
+## Built With
+- TypeScript
+- Node.js
+- Express.js
+- JWT
+- Argon2
+- MySQL2
+- React.js
+- MUI (Material-UI)
 
 ## Contact
 Feel free to reach out to me at sabadiatal@gmail.com if you have any questions or issues.

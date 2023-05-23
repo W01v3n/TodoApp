@@ -201,10 +201,10 @@ export async function getAuthenticatedUser(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  const reqWithUserId = req as RequestWithUserId;
+  try {
+    const reqWithUserId = req as RequestWithUserId;
 
-  if (reqWithUserId.userId) {
-    try {
+    if (reqWithUserId) {
       const userId = reqWithUserId.userId;
       console.log(userId);
 
@@ -219,11 +219,11 @@ export async function getAuthenticatedUser(
         const { password_hash, ...rest } = user;
         res.status(200).json({ rest, isAuthenticated: true });
       }
-    } catch (error) {
-      next(error);
+    } else {
+      // Handle the case where the token is invalid
+      res.redirect("/auth/refresh-token");
     }
-  } else {
-    // Handle the case where the token is invalid
-    res.redirect("/auth/refresh-token");
+  } catch (error) {
+    next(error);
   }
 }

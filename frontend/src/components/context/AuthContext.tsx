@@ -21,7 +21,7 @@ interface AuthContextData {
   setCurrentUser: (user: User | null) => void;
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   isLoading: boolean;
-  // login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
   refreshToken: () => Promise<void>;
@@ -43,6 +43,8 @@ export const AuthProvider = ({ children }: RouteProps) => {
 
   // Use the useCookies hook to get access to the cookies
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [refreshTokenCookie, setRefreshTokenCookie, removeRefreshTokenCookie] =
+    useCookies(["refreshToken"]);
 
   function isObjectEmpty(object: any) {
     return Object.keys(object).length === 0;
@@ -53,8 +55,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
     const checkAuthenticatedUser = async () => {
       try {
         // Check if there are cookies
-        // The isAuthenticated cookie is not httpOnly, therefore visible by the frontend react-cookie.
-        // This is actually checking if isAuthenticated is true, that is the only cookie that JS can see, all others are httpOnly, therefore, not visible by JS.
         if (!isObjectEmpty(cookies)) {
           const response = await api.get("/auth/re");
           if (response.data.isAuthenticated) {
@@ -91,39 +91,30 @@ export const AuthProvider = ({ children }: RouteProps) => {
         setIsAuthenticated(false);
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       setCurrentUser(null);
       setIsAuthenticated(false);
       removeCookie("token");
+      removeRefreshTokenCookie("refreshToken");
     }
   }
 
   // The login function makes a POST request to the /auth/login endpoint with the email and password.
   // If the login is successful, it updates the current user.
-  // const login = async (email: string, password: string) => {
-  //   const response = await api.post("/users/login", { email, password });
-  //   setCurrentUser(response.data);
-  //   setCookie("token", response.data.token, { path: "/" });
-  // };
+  const login = async (email: string, password: string) => {
+    const response = await api.post("/users/login", { email, password });
+    setCurrentUser(response.data);
+    setCookie("token", response.data.token, { path: "/" });
+  };
 
   // The logout function makes a POST request to the /auth/refresh-token endpoint.
   // After the request, it clears the current user.
-  async function logout() {
-    try {
-      const response = await api.post("/users/logout");
-      if (response.status == 200) {
-        setCurrentUser(null);
-        setIsAuthenticated(false);
-        console.log("Logged out user.");
-      } else {
-        console.log(
-          `Failed to logout: server responded with status ${response.status}`
-        );
-      }
-    } catch (error) {
-      console.log(`Failed to logout: ${error}`);
-    }
-  }
+  const logout = () => {
+    // api.post("/users/logout");
+    setCurrentUser(null);
+    removeRefreshTokenCookie("refreshToken");
+    removeCookie("token");
+  };
 
   // The provider component renders the AuthContext.Provider component with the current user, loading state, and login and logout functions as the value.
   // All children of this component will have access to these values.
@@ -132,7 +123,7 @@ export const AuthProvider = ({ children }: RouteProps) => {
       value={{
         currentUser,
         isLoading,
-        // login,
+        login,
         logout,
         isAuthenticated,
         setCurrentUser,

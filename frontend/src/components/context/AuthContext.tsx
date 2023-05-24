@@ -44,10 +44,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
   // Use the useCookies hook to get access to the cookies
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
-  function isObjectEmpty(object: any) {
-    return Object.keys(object).length === 0;
-  }
-
   // When the component mounts, it makes a request to the /auth/re endpoint to see if there is an authenticated user.
   useEffect(() => {
     const checkAuthenticatedUser = async () => {
@@ -55,22 +51,17 @@ export const AuthProvider = ({ children }: RouteProps) => {
         // Check if there are cookies
         // The isAuthenticated cookie is not httpOnly, therefore visible by the frontend react-cookie.
         // This is actually checking if isAuthenticated is true, that is the only cookie that JS can see, all others are httpOnly, therefore, not visible by JS.
-        if (!isObjectEmpty(cookies)) {
-          const response = await api.get("/auth/re");
-          if (response.data.isAuthenticated) {
-            setCurrentUser(response.data.rest);
-            setIsAuthenticated(true);
-          } else {
-            setIsAuthenticated(false);
-          }
+        const response = await api.get("/auth/re");
+        if (response.data.isAuthenticated) {
+          setCurrentUser(response.data.rest);
+          setIsAuthenticated(true);
         } else {
-          console.log("No token cookie.");
+          setIsAuthenticated(false);
         }
       } catch (error) {
         console.log(error);
         setCurrentUser(null);
         setIsAuthenticated(false);
-        removeCookie("token");
       } finally {
         setIsLoading(false);
       }
@@ -94,7 +85,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
       // console.log(error);
       setCurrentUser(null);
       setIsAuthenticated(false);
-      removeCookie("token");
     }
   }
 

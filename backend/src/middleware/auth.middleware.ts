@@ -61,10 +61,7 @@ export default function authMiddleware(
         .status(401)
         .json({ error: "Authentication failed: invalid access token." });
     }
-<<<<<<< HEAD
   } else {
     next();
-=======
->>>>>>> 6b51e60... WIP on feature/logout and bug fix
   }
 }

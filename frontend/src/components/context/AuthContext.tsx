@@ -46,10 +46,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
   const [refreshTokenCookie, setRefreshTokenCookie, removeRefreshTokenCookie] =
     useCookies(["refreshToken"]);
 
-  function isObjectEmpty(object: any) {
-    return Object.keys(object).length === 0;
-  }
-
   // When the component mounts, it makes a request to the /auth/re endpoint to see if there is an authenticated user.
   useEffect(() => {
     const checkAuthenticatedUser = async () => {
@@ -63,9 +59,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
         } else {
           setIsAuthenticated(false);
         }
-        // } else {
-        //   console.log("No token cookie.");
-        // }
       } catch (error) {
         console.log(error);
         setCurrentUser(null);

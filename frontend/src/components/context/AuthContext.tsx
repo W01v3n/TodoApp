@@ -55,17 +55,17 @@ export const AuthProvider = ({ children }: RouteProps) => {
     const checkAuthenticatedUser = async () => {
       try {
         // Check if there are cookies
-        if (!isObjectEmpty(cookies)) {
-          const response = await api.get("/auth/re");
-          if (response.data.isAuthenticated) {
-            setCurrentUser(response.data.rest);
-            setIsAuthenticated(true);
-          } else {
-            setIsAuthenticated(false);
-          }
+        // if (!isObjectEmpty(cookies)) {
+        const response = await api.get("/auth/re");
+        if (response.data.isAuthenticated) {
+          setCurrentUser(response.data.rest);
+          setIsAuthenticated(true);
         } else {
-          console.log("No token cookie.");
+          setIsAuthenticated(false);
         }
+        // } else {
+        //   console.log("No token cookie.");
+        // }
       } catch (error) {
         console.log(error);
         setCurrentUser(null);

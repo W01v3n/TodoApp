@@ -15,7 +15,7 @@ interface MyJwtPayload extends JwtPayload {
 }
 
 interface RequestWithUserId extends Request {
-  userId: number | string;
+  userId: number;
 }
 
 export async function registerUser(
@@ -83,12 +83,13 @@ export async function userLogin(
         { expiresIn: refreshTokenExpirationTime }
       );
 
-      // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
-      res.cookie("isAuthenticated", true, {
-        httpOnly: false,
-        maxAge: 60 * 60 * 1000,
-      });
+      // A cookie setting to see a valid cookie on the browser, also one that can be handled by javascript, because it is not httpOnly
+      // res.cookie("isAuthenticated", true, {
+      //   httpOnly: false,
+      //   maxAge: 60 * 60 * 1000,
+      // });
 
+      // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
       res.cookie("token", token, {
         httpOnly: true,
         maxAge: 60 * 60 * 1000, // Set the cookie expiration to match the JWT expiration (1 hour)
@@ -190,6 +191,8 @@ export async function refreshAccessToken(
     }
   } catch (error) {
     next(error);
+  } finally {
+    next();
   }
 }
 
@@ -198,10 +201,10 @@ export async function getAuthenticatedUser(
   res: Response,
   next: NextFunction
 ): Promise<void> {
-  try {
-    const reqWithUserId = req as RequestWithUserId;
+  const reqWithUserId = req as RequestWithUserId;
 
-    if (reqWithUserId) {
+  if (reqWithUserId.userId) {
+    try {
       const userId = reqWithUserId.userId;
       console.log(userId);
 
@@ -216,11 +219,11 @@ export async function getAuthenticatedUser(
         const { password_hash, ...rest } = user;
         res.status(200).json({ rest, isAuthenticated: true });
       }
-    } else {
-      // Handle the case where the token is invalid
-      res.status(401).json({ message: "Invalid token" });
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
+  } else {
+    // Handle the case where the token is invalid
+    res.redirect("/auth/refresh-token");
   }
 }

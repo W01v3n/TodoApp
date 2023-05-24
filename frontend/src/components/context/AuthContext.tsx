@@ -48,9 +48,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
   useEffect(() => {
     const checkAuthenticatedUser = async () => {
       try {
-        // Check if there are cookies
-        // The isAuthenticated cookie is not httpOnly, therefore visible by the frontend react-cookie.
-        // This is actually checking if isAuthenticated is true, that is the only cookie that JS can see, all others are httpOnly, therefore, not visible by JS.
         const response = await api.get("/auth/re");
         if (response.data.isAuthenticated) {
           setCurrentUser(response.data.rest);

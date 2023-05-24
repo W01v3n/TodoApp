@@ -48,8 +48,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
   useEffect(() => {
     const checkAuthenticatedUser = async () => {
       try {
-        // Check if there are cookies
-        // if (!isObjectEmpty(cookies)) {
         const response = await api.get("/auth/re");
         if (response.data.isAuthenticated) {
           setCurrentUser(response.data.rest);
@@ -61,7 +59,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
         console.log(error);
         setCurrentUser(null);
         setIsAuthenticated(false);
-        removeCookie("token");
       } finally {
         setIsLoading(false);
       }
@@ -85,7 +82,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
       console.log(error);
       setCurrentUser(null);
       setIsAuthenticated(false);
-      removeCookie("token");
     }
   }
 

@@ -8,11 +8,14 @@ import {
 } from "../repositories/user.repository";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import * as dotenv from "dotenv";
-import { strict } from "assert";
 dotenv.config();
 
 interface MyJwtPayload extends JwtPayload {
   userId: string | number;
+}
+
+interface RequestWithUserId extends Request {
+  userId: number;
 }
 
 export async function registerUser(
@@ -80,12 +83,13 @@ export async function userLogin(
         { expiresIn: refreshTokenExpirationTime }
       );
 
-      // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
-      res.cookie("isAuthenticated", true, {
-        httpOnly: false,
-        maxAge: 60 * 60 * 1000,
-      });
+      // A cookie setting to see a valid cookie on the browser, also one that can be handled by javascript, because it is not httpOnly
+      // res.cookie("isAuthenticated", true, {
+      //   httpOnly: false,
+      //   maxAge: 60 * 60 * 1000,
+      // });
 
+      // Put the token in a cookie and send over to the user as the response. res.cookie, and for now also send it as text.
       res.cookie("token", token, {
         httpOnly: true,
         maxAge: 60 * 60 * 1000, // Set the cookie expiration to match the JWT expiration (1 hour)
@@ -113,29 +117,51 @@ export async function userLogin(
   }
 }
 
+export function userLogout(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
+  try {
+    const { token, refreshToken } = req.cookies;
+    if (token && refreshToken) {
+      res.clearCookie("token");
+      res.clearCookie("refreshToken");
+      res.clearCookie("isAuthenticated");
+      res.status(200).json({ message: "Logged out user, removed cookies." });
+    } else {
+      res.status(401).json({ message: "No cookies were provided." });
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
 export async function refreshAccessToken(
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<void> {
+) {
   try {
     const { refreshToken } = req.cookies;
     if (!refreshToken) {
-      console.log("Refresh token not found.");
+      res.status(401).json({ message: "Refresh token not found." });
     }
 
     const decodedToken = jwt.verify(
       refreshToken,
       process.env.JWT_REFRESH_TOKEN_SECRET as string
     ) as MyJwtPayload;
-
     if (typeof decodedToken !== "string") {
       // Now it's safe to access decodedToken.userId
+      // const userId = decodedToken.userId;
       const userId = decodedToken.userId;
       const user = await getUserById(userId);
 
       if (!user) {
-        res.status(401).json({ message: "User not found." });
+        // console.log("Sending 401");
+
+        return res.status(401).json({ message: "User not found." });
       }
 
       const newToken = jwt.sign(
@@ -145,6 +171,8 @@ export async function refreshAccessToken(
           expiresIn: Math.floor(Date.now() / 1000) + 60 * 60, // Access token expires in 1 hour
         }
       );
+
+      // console.log("setting cookie");
 
       res.cookie("token", newToken, {
         httpOnly: true,
@@ -158,10 +186,13 @@ export async function refreshAccessToken(
       }
     } else {
       // Handle the case where the token is invalid
-      console.log(decodedToken); // Will probably be an error in that case.
+      // console.log(decodedToken); // Will probably be an error in that case.
+      console.log("Could not find user ID.");
     }
   } catch (error) {
     next(error);
+  } finally {
+    next();
   }
 }
 
@@ -171,21 +202,12 @@ export async function getAuthenticatedUser(
   next: NextFunction
 ): Promise<void> {
   try {
-    const { token, isAuthenticated } = req.cookies;
-    if (!isAuthenticated) {
-      res.status(401).json({ isAuthenticated: false });
-    }
-    if (!token) {
-      res.status(401).json({ message: "No token was provided!" });
-    }
+    const reqWithUserId = req as RequestWithUserId;
 
-    const decodedToken = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string
-    ) as MyJwtPayload;
+    if (reqWithUserId) {
+      const userId = reqWithUserId.userId;
+      console.log(userId);
 
-    if (typeof decodedToken !== "string") {
-      const userId = decodedToken.userId;
       const user = await getUserById(userId);
 
       if (!user) {
@@ -199,7 +221,7 @@ export async function getAuthenticatedUser(
       }
     } else {
       // Handle the case where the token is invalid
-      res.status(401).json({ message: "Invalid token" });
+      res.redirect("/auth/refresh-token");
     }
   } catch (error) {
     next(error);

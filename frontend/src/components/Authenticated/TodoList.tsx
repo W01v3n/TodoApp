@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect, useRef } from "react";
 import TodoItem from "./TodoItem";
 import { TextField } from "@mui/material";
 import {
@@ -75,6 +75,14 @@ function NewItemForm({ onSubmit, listId }: NewItemFormProps) {
     setItemContent("");
   }
 
+  const itemNameRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (itemNameRef.current) {
+      itemNameRef.current.focus();
+    }
+  }, []);
+
   return (
     <div className="shadow shadow-blue-500">
       <form onSubmit={handleSubmit}>
@@ -83,7 +91,7 @@ function NewItemForm({ onSubmit, listId }: NewItemFormProps) {
             className="md:col-span-4 md:col-start-3"
             color="primary"
             type="text"
-            inputRef={(input) => input && input.focus()}
+            inputRef={itemNameRef}
             label="Item Name"
             value={itemName}
             required

@@ -13,7 +13,7 @@ function Navbar() {
         <div className="flex items-center justify-between">
           <div className="text-xl text-black ">
             <Link to="/">
-              <h1>THYNKSO</h1>
+              <h1 className="font-light tracking-widest">THYNKSO</h1>
             </Link>
           </div>
           <button
@@ -38,6 +38,7 @@ function Navbar() {
               {!isAuthenticated && <NavLink to="/login" label="Login" />}
               {!isAuthenticated && <NavLink to="/register" label="Register" />}
               <NavLink to="/lists" label="My Lists" />
+              {isAuthenticated && <NavLink to="/logout" label="Logout" />}
             </ul>
           </div>
         </div>

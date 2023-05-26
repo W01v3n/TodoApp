@@ -145,7 +145,7 @@ export async function refreshAccessToken(
   try {
     const { refreshToken } = req.cookies;
     if (!refreshToken) {
-      res.status(401).json({ message: "Refresh token not found." });
+      return res.status(401).json({ message: "Refresh token not found." });
     }
 
     const decodedToken = jwt.verify(
@@ -206,7 +206,7 @@ export async function getAuthenticatedUser(
 
     if (reqWithUserId) {
       const userId = reqWithUserId.userId;
-      console.log(userId);
+      console.log(`User ID: ${userId}}`);
 
       const user = await getUserById(userId);
 

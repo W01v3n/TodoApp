@@ -5,6 +5,7 @@ import { ClipLoader } from "react-spinners";
 import api from "../services/api.service";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
+import isValidEmail from "../helpers/isValidEmail.helper";
 
 function RegisterForm() {
   // User data states
@@ -61,15 +62,6 @@ function RegisterForm() {
   function handleVerifyPassword(event: React.ChangeEvent<HTMLInputElement>) {
     const verifyPassword = event.target.value;
     setVerifyPassword(verifyPassword);
-  }
-
-  function isValidEmail(email: string) {
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    if (!emailRegex.test(email)) {
-      return false;
-    } else {
-      return true;
-    }
   }
 
   const AnimatedDiv = animated.div;

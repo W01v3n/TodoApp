@@ -8,6 +8,7 @@ import {
 } from "../repositories/user.repository";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import * as dotenv from "dotenv";
+import AuthRequest from "../interfaces/authRequest.type";
 dotenv.config();
 
 interface MyJwtPayload extends JwtPayload {
@@ -138,7 +139,7 @@ export function userLogout(
 }
 
 export async function refreshAccessToken(
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) {
@@ -164,23 +165,26 @@ export async function refreshAccessToken(
         return res.status(401).json({ message: "User not found." });
       }
 
-      const newToken = jwt.sign(
-        { userId: user?.id },
-        process.env.JWT_SECRET as string,
-        {
-          expiresIn: Math.floor(Date.now() / 1000) + 60 * 60, // Access token expires in 1 hour
-        }
-      );
-
-      // console.log("setting cookie");
-
-      res.cookie("token", newToken, {
-        httpOnly: true,
-        maxAge: 60 * 60 * 1000,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      });
       if (user) {
+        const newToken = jwt.sign(
+          { userId: user?.id },
+          process.env.JWT_SECRET as string,
+          {
+            expiresIn: Math.floor(Date.now() / 1000) + 60 * 60, // Access token expires in 1 hour
+          }
+        );
+
+        // console.log("setting cookie");
+
+        res.cookie("token", newToken, {
+          httpOnly: true,
+          maxAge: 60 * 60 * 1000,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+        });
+
+        req.userId = Number(user.id);
+
         const { password_hash, ...rest } = user;
         res.status(200).json({ token: newToken, rest });
       }
@@ -197,16 +201,14 @@ export async function refreshAccessToken(
 }
 
 export async function getAuthenticatedUser(
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   try {
-    const reqWithUserId = req as RequestWithUserId;
-
-    if (reqWithUserId) {
-      const userId = reqWithUserId.userId;
-      console.log(`User ID: ${userId}}`);
+    if (req.userId) {
+      const userId = req.userId;
+      console.log(`User ID: ${userId}`);
 
       const user = await getUserById(userId);
 
@@ -220,8 +222,8 @@ export async function getAuthenticatedUser(
         res.status(200).json({ rest, isAuthenticated: true });
       }
     } else {
-      // Handle the case where the token is invalid
-      res.redirect("/auth/refresh-token");
+      // next();
+      res.status(401).json({ isAuthenticated: false });
     }
   } catch (error) {
     next(error);

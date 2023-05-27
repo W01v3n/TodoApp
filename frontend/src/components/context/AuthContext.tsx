@@ -56,6 +56,15 @@ export const AuthProvider = ({ children }: RouteProps) => {
           setIsAuthenticated(false);
         }
       } catch (error) {
+        const refreshTokenResponse = await api.post("/auth/refresh-token");
+        if (refreshTokenResponse.data.token) {
+          // Retry to see if the user is now authenticated
+          const response = await api.get("/auth/re");
+          if (response.data.isAuthenticated) {
+            setCurrentUser(response.data.rest);
+            setIsAuthenticated(true);
+          }
+        }
         console.log(error);
         setCurrentUser(null);
         setIsAuthenticated(false);

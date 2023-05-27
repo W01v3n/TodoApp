@@ -9,6 +9,13 @@ const port = process.env.API_PORT || 3000;
 
 // Initialize application
 const app: Application = express();
+// Log all requests (DEBUG ONLY)
+// app.use((req, res, next) => {
+//   console.log(
+//     `Received a ${req.method} request on path ${req.path}, responded with ${res.statusCode}`
+//   );
+//   next();
+// });
 
 // Use JSON parsing middleware from express
 app.use(express.json());

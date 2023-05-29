@@ -31,6 +31,7 @@ describe("LoginForm Component", () => {
       screen.getByLabelText(/Email Address/i),
       "test@example.com"
     );
+
     await userEvent.type(screen.getByLabelText(/Password/i), "password123");
 
     // Simulate user clicking on Sign In button

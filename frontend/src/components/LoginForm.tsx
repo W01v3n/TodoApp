@@ -5,6 +5,7 @@ import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api.service";
 import axios from "axios";
+import isValidEmail from "../helpers/isValidEmail.helper";
 
 import { useAuth } from "./context/AuthContext";
 
@@ -41,15 +42,6 @@ function LoginForm() {
   function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
     const password = event.target.value;
     setPassword(password);
-  }
-
-  function isValidEmail(email: string) {
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    if (!emailRegex.test(email)) {
-      return false;
-    } else {
-      return true;
-    }
   }
 
   const AnimatedDiv = animated.div;

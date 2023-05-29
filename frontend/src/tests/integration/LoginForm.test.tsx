@@ -27,10 +27,14 @@ describe("LoginForm Component", () => {
     );
 
     // Simulate user typings
-    userEvent.type(screen.getByLabelText(/Email Address/i), "test@example.com");
-    userEvent.type(screen.getByLabelText(/Password/i), "password123");
+    await userEvent.type(
+      screen.getByLabelText(/Email Address/i),
+      "test@example.com"
+    );
+    await userEvent.type(screen.getByLabelText(/Password/i), "password123");
+
     // Simulate user clicking on Sign In button
-    userEvent.click(screen.getByRole("button", { name: "Sign In" }));
+    await userEvent.click(screen.getByRole("button", { name: "Sign In" }));
 
     // Wait for the form to be submnitted and get the state to be updated
     await waitFor(() => screen.getByText("Logged in successfully"));

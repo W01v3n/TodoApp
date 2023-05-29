@@ -21,13 +21,13 @@ const restHandlers = [
     console.log(
       "Authentication check request received, returning mock response"
     );
-    return res(ctx.status(401), ctx.json({ isAuthenticated: false }));
+    return res(ctx.status(200), ctx.json({ isAuthenticated: false }));
   }),
 
   rest.post("http://localhost:3000/api/auth/refresh-token", (req, res, ctx) => {
     console.log("Token refresh request received, returning mock token");
     return res(
-      ctx.status(401),
+      ctx.status(200),
       ctx.json({
         message: "Refresh token not found. (Relax, it's just a mock..)",
       })

@@ -5,7 +5,7 @@ import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api.service";
 import axios from "axios";
-import isValidEmail from "../helpers/isValidEmail.helper";
+import isValidEmail from "../utils/email.utils";
 
 import { useAuth } from "./context/AuthContext";
 
@@ -133,6 +133,7 @@ function LoginForm() {
                     color="primary"
                     type="email"
                     label="Email Address"
+                    name="email"
                     onChange={handleEmail}
                     value={email}
                     helperText={
@@ -150,6 +151,7 @@ function LoginForm() {
                   <TextField
                     color="primary"
                     type="password"
+                    name="password"
                     label="Password"
                     onChange={handlePassword}
                     value={password}

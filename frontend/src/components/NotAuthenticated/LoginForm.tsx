@@ -3,11 +3,11 @@ import { FormEvent, useEffect, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api.service";
+import api from "../../services/api.service";
 import axios from "axios";
-import isValidEmail from "../utils/email.utils";
+import isValidEmail from "../../utils/email.utils";
 
-import { useAuth } from "./context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 
 function LoginForm() {
   const navigate = useNavigate();

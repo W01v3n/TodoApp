@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import FeatureSection from "../../pages/Home/Sections/FeatureSection";
+import FeatureSection from "./FeatureSection";
 
 it("Should have a feature section", () => {
   render(<FeatureSection />);

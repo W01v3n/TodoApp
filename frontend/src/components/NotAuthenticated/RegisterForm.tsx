@@ -2,10 +2,10 @@ import { TextField } from "@mui/material";
 import { FormEvent, useState, useEffect } from "react";
 import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
-import api from "../services/api.service";
+import api from "../../services/api.service";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
-import isValidEmail from "../utils/email.utils";
+import { useAuth } from "../Context/AuthContext";
+import isValidEmail from "../../utils/email.utils";
 
 function RegisterForm() {
   // User data states

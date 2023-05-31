@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import LoginForm from "../../components/LoginForm";
-import { AuthProvider } from "../../components/context/AuthContext";
+import LoginForm from "./LoginForm";
+import { AuthProvider } from "../Context/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 
 describe("LoginForm Component", () => {

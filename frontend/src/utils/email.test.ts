@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import isValidEmail from "../../utils/email.utils";
+import isValidEmail from "./email.utils";
 
 describe("isValidEmail function", () => {
   // Define a test case for a valid email

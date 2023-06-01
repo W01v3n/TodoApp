@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar/Navbar";
+import Navbar from "./components/Common/Navbar/Navbar";
 import routes from "./routes";
 import Footer from "./pages/GeneralSections/Footer";
-import { AuthProvider } from "./components/context/AuthContext";
-import ProtectedComponent from "./components/ProtectedComponent";
+import { AuthProvider } from "./components/Context/AuthContext";
+import ProtectedComponent from "./components/Authenticated/ProtectedComponent";
 
 function App() {
   return (

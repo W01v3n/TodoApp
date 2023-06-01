@@ -3,10 +3,11 @@ import { FormEvent, useEffect, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api.service";
+import api from "../../services/api.service";
 import axios from "axios";
+import isValidEmail from "../../utils/email.utils";
 
-import { useAuth } from "./context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -41,15 +42,6 @@ function LoginForm() {
   function handlePassword(event: React.ChangeEvent<HTMLInputElement>) {
     const password = event.target.value;
     setPassword(password);
-  }
-
-  function isValidEmail(email: string) {
-    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    if (!emailRegex.test(email)) {
-      return false;
-    } else {
-      return true;
-    }
   }
 
   const AnimatedDiv = animated.div;
@@ -141,6 +133,7 @@ function LoginForm() {
                     color="primary"
                     type="email"
                     label="Email Address"
+                    name="email"
                     onChange={handleEmail}
                     value={email}
                     helperText={
@@ -158,6 +151,7 @@ function LoginForm() {
                   <TextField
                     color="primary"
                     type="password"
+                    name="password"
                     label="Password"
                     onChange={handlePassword}
                     value={password}

@@ -28,7 +28,7 @@ function RegisterForm() {
 
   useEffect(() => {
     isAuthenticated && navigateToMyLists();
-  }, [isAuthenticated]);
+  });
 
   // Form submission state
   const [submitStatus, setSubmitStatus] = useState<
@@ -141,6 +141,7 @@ function RegisterForm() {
                     color="primary"
                     type="text"
                     label="First Name"
+                    name="fName"
                     value={firstName}
                     onChange={handleFirstName}
                     id="fName"
@@ -154,6 +155,7 @@ function RegisterForm() {
                     color="primary"
                     type="text"
                     label="Last Name"
+                    name="lName"
                     value={lastName}
                     onChange={handleLastName}
                     id="lName"
@@ -166,6 +168,7 @@ function RegisterForm() {
                     color="primary"
                     type="email"
                     label="Email Address"
+                    name="email"
                     value={email}
                     onChange={handleEmail}
                     helperText={
@@ -186,6 +189,7 @@ function RegisterForm() {
                     color="primary"
                     type="password"
                     label="Password"
+                    name="password"
                     value={password}
                     onChange={handlePassword}
                     required

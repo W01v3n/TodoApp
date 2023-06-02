@@ -59,9 +59,6 @@ describe("LoginForm Component", () => {
       "noauth@example.com"
     );
 
-    // await waitFor(() => screen.getByText("Email is not valid!"));
-    // expect(screen.getByText("Email is not valid!"));
-
     await userEvent.type(screen.getByLabelText(/Password/i), "password111");
 
     // Simulate user clicking on Sign In button

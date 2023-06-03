@@ -19,6 +19,23 @@ const registeringUser = {
   updatedAt: new Date(),
 };
 
+const todoLists = [
+  {
+    createdAt: new Date(),
+    id: 1,
+    name: "Tests List",
+    updatedAt: new Date(),
+    userId: 1,
+  },
+  {
+    createdAt: new Date(),
+    id: 2,
+    name: "Tests List2",
+    updatedAt: new Date(),
+    userId: 1,
+  },
+];
+
 const restHandlers = [
   rest.post("http://localhost:3000/api/users/login", async (_req, res, ctx) => {
     const { email, password } = await _req.json();
@@ -68,6 +85,10 @@ const restHandlers = [
       );
     }
   ),
+
+  rest.get("http://localhost:3000/api/lists", (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(todoLists));
+  }),
 ];
 
 export const server = setupServer(...restHandlers);

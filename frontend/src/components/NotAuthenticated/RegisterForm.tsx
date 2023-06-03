@@ -113,7 +113,7 @@ function RegisterForm() {
     try {
       // Send user data to backend
       const response = await api.post("/users/register", userData);
-      console.log(response);
+      // console.log(response);
       if (response.status == 201) {
         setSubmitStatus("success");
         navigateToLogin();

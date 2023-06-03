@@ -129,7 +129,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
       value={{
         currentUser,
         isLoading,
-        // login,
         logout,
         isAuthenticated,
         setCurrentUser,

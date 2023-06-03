@@ -145,7 +145,6 @@ function TodoListsPage() {
             <TodoList
               key={typeof list !== "string" ? list.id : index}
               list={list}
-              // listName={typeof list !== "string" ? list.name : list}
               onDelete={handleDeleteList}
             />
           ))}
@@ -154,4 +153,5 @@ function TodoListsPage() {
   );
 }
 
+export { NewListForm };
 export default TodoListsPage;

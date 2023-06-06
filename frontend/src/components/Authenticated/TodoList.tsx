@@ -163,7 +163,7 @@ function TodoList({ list, onDelete }: TodoListProps) {
     };
 
     fetchItems();
-  }, []);
+  }, [list.id]);
 
   return (
     <div className="container mx-8 w-5/6 shadow-md shadow-blue-400 md:m-0 md:w-auto">

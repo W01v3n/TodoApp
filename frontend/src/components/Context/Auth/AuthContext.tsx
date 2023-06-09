@@ -1,8 +1,8 @@
 // Import necessary packages and components.
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { RouteProps } from "react-router-dom";
-import api from "../../services/api.service";
+import api from "../../../services/api.service";
 
 // Define the structure of a User object.
 interface User {
@@ -30,7 +30,9 @@ interface AuthContextData {
 // Create the context with React's createContext function.
 // This context can hold a value of type AuthContextData, or it can be undefined.
 // Initially, it's set to undefined.
-const AuthContext = createContext<AuthContextData | undefined>(undefined);
+export const AuthContext = createContext<AuthContextData | undefined>(
+  undefined
+);
 
 // Create a provider component. This component will provide the authentication context to all of its children.
 // This is a common pattern in React: we define a context, then provide it using a special component.
@@ -95,14 +97,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
     }
   }
 
-  // The login function makes a POST request to the /auth/login endpoint with the email and password.
-  // If the login is successful, it updates the current user.
-  // const login = async (email: string, password: string) => {
-  //   const response = await api.post("/users/login", { email, password });
-  //   setCurrentUser(response.data);
-  //   setCookie("token", response.data.token, { path: "/" });
-  // };
-
   // The logout function makes a POST request to the /auth/refresh-token endpoint.
   // After the request, it clears the current user.
   async function logout() {
@@ -129,7 +123,6 @@ export const AuthProvider = ({ children }: RouteProps) => {
       value={{
         currentUser,
         isLoading,
-        // login,
         logout,
         isAuthenticated,
         setCurrentUser,
@@ -141,16 +134,3 @@ export const AuthProvider = ({ children }: RouteProps) => {
     </AuthContext.Provider>
   );
 };
-
-// This is a custom hook that provides an easy way to access the authentication context.
-// It can be used in any functional component that is a child of the AuthProvider.
-export function useAuth() {
-  const context = useContext(AuthContext);
-
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return {
-    ...context,
-  };
-}

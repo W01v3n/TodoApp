@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Common/Navbar/Navbar";
 import routes from "./routes";
 import Footer from "./pages/GeneralSections/Footer";
-import { AuthProvider } from "./components/Context/AuthContext";
+import { AuthProvider } from "./components/Context/Auth/AuthContext";
 import ProtectedComponent from "./components/Authenticated/ProtectedComponent";
 
 function App() {

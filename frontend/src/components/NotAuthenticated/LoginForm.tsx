@@ -7,7 +7,7 @@ import api from "../../services/api.service";
 import axios from "axios";
 import isValidEmail from "../../utils/email.utils";
 
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../Context/Auth/useAuth";
 
 function LoginForm() {
   const navigate = useNavigate();

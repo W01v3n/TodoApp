@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate, RouteProps } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../Context/Auth/useAuth";
 
 type ProtectedComponentProps = RouteProps & {
   component: React.ComponentType;

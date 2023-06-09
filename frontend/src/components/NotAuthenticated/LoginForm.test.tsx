@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import LoginForm from "./LoginForm";
-import { AuthProvider } from "../Context/AuthContext";
+import { AuthProvider } from "../Context/Auth/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 
 describe("LoginForm Component", () => {
@@ -58,9 +58,6 @@ describe("LoginForm Component", () => {
       screen.getByLabelText(/Email Address/i),
       "noauth@example.com"
     );
-
-    // await waitFor(() => screen.getByText("Email is not valid!"));
-    // expect(screen.getByText("Email is not valid!"));
 
     await userEvent.type(screen.getByLabelText(/Password/i), "password111");
 

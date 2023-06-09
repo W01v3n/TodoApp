@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "test": "vitest --reporter verbose",
+    "test": "vitest run --reporter verbose",
+    "testdev": "vitest --reporter verbose",
+    "testcov": "vitest --coverage",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"

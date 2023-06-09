@@ -5,7 +5,6 @@ import { setupServer } from "msw/node";
 import TodoListsPage from "./TodoListsPage";
 import { AuthProvider } from "../../components/Context/Auth/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
-import { isAxiosError } from "axios";
 
 // Mock server setup
 const todoLists = [

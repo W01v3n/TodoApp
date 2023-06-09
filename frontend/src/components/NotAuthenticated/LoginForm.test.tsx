@@ -1,9 +1,65 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, cleanup } from "@testing-library/react";
+import matchers from "@testing-library/jest-dom/matchers";
 import userEvent from "@testing-library/user-event";
+import { rest } from "msw";
+import { setupServer } from "msw/node";
 import LoginForm from "./LoginForm";
 import { AuthProvider } from "../Context/Auth/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 
+// Mock server setup
+const loggedInUser = {
+  userId: 1,
+  username: "TestUser",
+  email: "test@example.com",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
+const restHandlers = [
+  rest.post("http://localhost:3000/api/users/login", async (_req, res, ctx) => {
+    const { email, password } = await _req.json();
+    if (email === "test@example.com" && password === "password123") {
+      return res(ctx.status(200), ctx.json(loggedInUser));
+    } else {
+      return res(
+        ctx.status(401),
+        ctx.json({ message: "Error in authentication." })
+      );
+    }
+  }),
+  rest.get("http://localhost:3000/api/auth/re", (_req, res, ctx) => {
+    return res(ctx.status(401), ctx.json({ isAuthenticated: false }));
+  }),
+
+  rest.post(
+    "http://localhost:3000/api/auth/refresh-token",
+    (_req, res, ctx) => {
+      return res(ctx.status(401));
+    }
+  ),
+];
+
+const server = setupServer(...restHandlers);
+
+// Set up server before tests and tear down after tests
+expect.extend(matchers);
+
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+
+beforeEach(() => {
+  vi.resetAllMocks();
+});
+
+afterEach(() => {
+  cleanup();
+  server.resetHandlers();
+  vi.clearAllMocks();
+});
+
+afterAll(() => server.close());
+
+// Tests
 describe("LoginForm Component", () => {
   test("renders the form", () => {
     render(

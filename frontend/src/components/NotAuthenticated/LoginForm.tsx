@@ -19,7 +19,7 @@ function LoginForm() {
 
   useEffect(() => {
     isAuthenticated && navigateToMyLists();
-  }, [isAuthenticated]);
+  });
 
   // User data states
   const [email, setEmail] = useState("");

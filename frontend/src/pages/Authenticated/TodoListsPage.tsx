@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import TodoList from "../../components/Authenticated/TodoList";
-import { useAuth } from "../../components/Context/AuthContext";
+import { useAuth } from "../../components/Context/Auth/useAuth";
 import { newList, getAllLists, deleteList } from "../../services/list.service";
 
 interface NewListFormProps {
@@ -145,7 +145,6 @@ function TodoListsPage() {
             <TodoList
               key={typeof list !== "string" ? list.id : index}
               list={list}
-              // listName={typeof list !== "string" ? list.name : list}
               onDelete={handleDeleteList}
             />
           ))}
@@ -154,4 +153,5 @@ function TodoListsPage() {
   );
 }
 
+export { NewListForm };
 export default TodoListsPage;

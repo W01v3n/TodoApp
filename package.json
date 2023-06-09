@@ -1,0 +1,15 @@
+{
+  "name": "todoapp",
+  "version": "1.0.0",
+  "description": "## Overview THYNKSO is an authenticated todo application where each user has his own lists and his own items. The application was built using the MERN stack (MongoDB, Express.js, React.js, Node.js) and SQL for database management.",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.3"
+  }
+}

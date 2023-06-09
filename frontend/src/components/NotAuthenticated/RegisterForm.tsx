@@ -4,7 +4,7 @@ import { useSpring, animated } from "react-spring";
 import { ClipLoader } from "react-spinners";
 import api from "../../services/api.service";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+import { useAuth } from "../Context/Auth/useAuth";
 import isValidEmail from "../../utils/email.utils";
 
 function RegisterForm() {
@@ -28,7 +28,7 @@ function RegisterForm() {
 
   useEffect(() => {
     isAuthenticated && navigateToMyLists();
-  }, [isAuthenticated]);
+  });
 
   // Form submission state
   const [submitStatus, setSubmitStatus] = useState<
@@ -113,7 +113,7 @@ function RegisterForm() {
     try {
       // Send user data to backend
       const response = await api.post("/users/register", userData);
-      console.log(response);
+      // console.log(response);
       if (response.status == 201) {
         setSubmitStatus("success");
         navigateToLogin();
@@ -141,6 +141,7 @@ function RegisterForm() {
                     color="primary"
                     type="text"
                     label="First Name"
+                    name="fName"
                     value={firstName}
                     onChange={handleFirstName}
                     id="fName"
@@ -154,6 +155,7 @@ function RegisterForm() {
                     color="primary"
                     type="text"
                     label="Last Name"
+                    name="lName"
                     value={lastName}
                     onChange={handleLastName}
                     id="lName"
@@ -166,6 +168,7 @@ function RegisterForm() {
                     color="primary"
                     type="email"
                     label="Email Address"
+                    name="email"
                     value={email}
                     onChange={handleEmail}
                     helperText={
@@ -186,6 +189,7 @@ function RegisterForm() {
                     color="primary"
                     type="password"
                     label="Password"
+                    name="password"
                     value={password}
                     onChange={handlePassword}
                     required

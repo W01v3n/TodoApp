@@ -52,7 +52,18 @@ instance.interceptors.response.use(
 
     // If the error was not a recoverable error, just reject the Promise with the original error.
     // This will cause the Promise returned by the axios request to be rejected.
-    return Promise.reject(error);
+    // THIS WAS THE OLD WAY TO END THE PROMISE HANDLING
+    // return Promise.reject(error);
+
+    // Instead of rejecting the Promise, we resolve it with a response that indicates an error occurred.
+    // You can include more information about the error in the data property.
+    return Promise.resolve({
+      status: 401,
+      data: {
+        error: true,
+        message: "An error occurred.",
+      },
+    });
   }
 );
 

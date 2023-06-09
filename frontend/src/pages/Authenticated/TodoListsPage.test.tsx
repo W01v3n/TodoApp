@@ -26,12 +26,12 @@ const todoLists = [
 
 const restHandlers = [
   rest.get("http://localhost:3000/api/auth/re", (_req, res, ctx) => {
-    return res(ctx.status(401));
+    return res(ctx.status(200));
   }),
   rest.post(
     "http://localhost:3000/api/auth/refresh-token",
     (_req, res, ctx) => {
-      return res(ctx.status(401), ctx.json({ token: "newToken" }));
+      return res(ctx.status(200), ctx.json({ token: "newToken" }));
     }
   ),
 

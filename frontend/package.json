@@ -18,6 +18,7 @@
     "@fontsource/roboto": "^4.5.8",
     "@heroicons/react": "^2.0.17",
     "@mui/material": "^5.12.3",
+    "@types/history": "^5.0.0",
     "axios": "^1.4.0",
     "dotenv": "^16.0.3",
     "inspirational-quotes": "^2.0.1",

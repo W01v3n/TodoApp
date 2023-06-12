@@ -88,6 +88,7 @@ function NewListForm({ onSubmit }: NewListFormProps) {
 function TodoListsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [todoLists, setTodoLists] = useState<Array<ITodoListObject>>([]);
+  const [areListsLoading, setAreListsLoading] = useState(true);
 
   function handleNewListButton() {
     setIsFormOpen(!isFormOpen);
@@ -121,6 +122,7 @@ function TodoListsPage() {
     const fetchLists = async () => {
       const lists = await getAllLists();
       setTodoLists(lists || []);
+      setAreListsLoading(false);
     };
 
     fetchLists();
@@ -140,16 +142,20 @@ function TodoListsPage() {
         </button>
       </div>
       {isFormOpen && <NewListForm onSubmit={handleNewListSubmit} />}
-      <div className="mb-20 grid grid-cols-1 gap-10 md:mx-14 md:grid-cols-4 md:items-start md:gap-10">
-        {todoLists &&
-          todoLists.map((list, index) => (
-            <TodoList
-              key={typeof list !== "string" ? list.id : index}
-              list={list}
-              onDelete={handleDeleteList}
-            />
-          ))}
-      </div>
+      {!areListsLoading ? (
+        <div className="mb-20 grid grid-cols-1 gap-10 md:mx-14 md:grid-cols-4 md:items-start md:gap-10">
+          {todoLists &&
+            todoLists.map((list, index) => (
+              <TodoList
+                key={typeof list !== "string" ? list.id : index}
+                list={list}
+                onDelete={handleDeleteList}
+              />
+            ))}
+        </div>
+      ) : (
+        <p>Loading..</p>
+      )}
     </div>
   );
 }

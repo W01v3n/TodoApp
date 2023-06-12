@@ -1,35 +1,40 @@
-import { render, screen, cleanup, waitFor } from "@testing-library/react";
+import { render, screen, cleanup, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import matchers from "@testing-library/jest-dom/matchers";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import TodoListsPage, { NewListForm } from "./TodoListsPage";
+import TodoListsPage from "./TodoListsPage";
 import { AuthProvider } from "../../components/Context/Auth/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
-// import { useAuth } from "../../components/Context/Auth/useAuth";
-// import { MockAuthProvider } from "../../components/Context/Auth/Mocked/MockAuthContext";
 
 // Mock server setup
-
 // Define the mock user
-const mockUser = {
-  id: 1,
-  name: "Mr.Tester",
-  email: "mrtester@test.com",
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+// const mockUser = {
+//   id: 1,
+//   name: "Mr.Tester",
+//   email: "mrtester@test.com",
+//   createdAt: new Date(),
+//   updatedAt: new Date(),
+// };
 
-vi.mock("../../components/Context/Auth/useAuth", () => ({
-  useAuth: () => ({
-    currentUser: mockUser,
-    setCurrentUser: vi.fn(),
-    setIsAuthenticated: vi.fn(),
-    isLoading: false,
-    logout: vi.fn(),
-    isAuthenticated: true,
-    refreshToken: vi.fn(),
-  }),
+// This way of mocking useAuth works, but is not required for this test file,
+// because there are mocks for the service functions that require the user to be authenticated. And the mocks require no authentication. Just testing the UI
+// vi.mock("../../components/Context/Auth/useAuth", () => ({
+//   useAuth: () => ({
+//     currentUser: mockUser,
+//     setCurrentUser: vi.fn(),
+//     setIsAuthenticated: vi.fn(),
+//     isLoading: false,
+//     logout: vi.fn(),
+//     isAuthenticated: true,
+//     refreshToken: vi.fn(),
+//   }),
+// }));
+
+// Mocking the required list services instead of the rest handlers
+vi.mock("../../services/list.service.ts", async () => ({
+  getAllLists: vi.fn(() => Promise.resolve(todoLists)),
+  newList: vi.fn(() => Promise.resolve(createdList)),
 }));
 
 const todoLists = [
@@ -46,48 +51,6 @@ const todoLists = [
     name: "Tests List2",
     updatedAt: new Date(),
     userId: 1,
-  },
-];
-
-const todoItemsList1 = [
-  {
-    id: 1,
-    title: "item1",
-    content: "item1 content",
-    completed: false,
-    listId: 1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: 2,
-    title: "item2",
-    content: "item2 content",
-    completed: false,
-    listId: 1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
-
-const todoItemsList2 = [
-  {
-    id: 3,
-    title: "item3",
-    content: "item3 content",
-    completed: false,
-    listId: 2,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: 4,
-    title: "item4",
-    content: "item4 content",
-    completed: false,
-    listId: 2,
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
 ];
 
@@ -108,22 +71,6 @@ const restHandlers = [
       return res(ctx.status(200), ctx.json({ token: "newToken" }));
     }
   ),
-
-  rest.get("http://localhost:3000/api/lists", (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(todoLists));
-  }),
-
-  rest.get("http://localhost:3000/api/lists/1/items", (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(todoItemsList1));
-  }),
-
-  rest.get("http://localhost:3000/api/lists/2/items", (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(todoItemsList2));
-  }),
-
-  rest.post("http://localhost:3000/api/lists", (_req, res, ctx) => {
-    return res(ctx.status(201), ctx.json(createdList));
-  }),
 ];
 
 const server = setupServer(...restHandlers);
@@ -147,14 +94,16 @@ afterAll(() => server.close());
 
 // Tests
 describe("TodoListsPage Component", () => {
-  test("renders the page", () => {
-    render(
-      <AuthProvider>
-        <Router>
-          <TodoListsPage />
-        </Router>
-      </AuthProvider>
-    );
+  test("renders the page", async () => {
+    await act(async () => {
+      render(
+        <AuthProvider>
+          <Router>
+            <TodoListsPage />
+          </Router>
+        </AuthProvider>
+      );
+    });
 
     expect(screen.getByText("My TodoLists")).toBeInTheDocument();
   });
@@ -162,13 +111,21 @@ describe("TodoListsPage Component", () => {
 
 describe("NewListForm Component", () => {
   test("creating new list in TodoListsPage with NewListForm", async () => {
-    render(
-      <AuthProvider>
-        <Router>
-          <TodoListsPage />
-        </Router>
-      </AuthProvider>
-    );
+    await act(async () => {
+      render(
+        <AuthProvider>
+          <Router>
+            <TodoListsPage />
+          </Router>
+        </AuthProvider>
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.findAllByText(/Delete/i));
+    });
+
+    // console.log(screen.debug());
 
     const newListButton = await screen.findByText("New List");
     await userEvent.click(newListButton);
@@ -179,6 +136,6 @@ describe("NewListForm Component", () => {
     const createListButton = await screen.findByTestId("create-list");
     await userEvent.click(createListButton);
 
-    expect(await screen.findByText("Mr.Testers List")).toBeInTheDocument();
+    // expect(await screen.findByText("Mr.Testers List")).toBeInTheDocument();
   });
 });

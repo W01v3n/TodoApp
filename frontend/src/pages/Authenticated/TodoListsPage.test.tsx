@@ -1,10 +1,11 @@
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, fireEvent, screen, cleanup } from "@testing-library/react";
 import matchers from "@testing-library/jest-dom/matchers";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import TodoListsPage from "./TodoListsPage";
+import TodoListsPage, { NewListForm } from "./TodoListsPage";
 import { AuthProvider } from "../../components/Context/Auth/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
+// import { MockAuthProvider } from "../../components/Context/Auth/Mocked/MockAuthContext";
 
 // Mock server setup
 const todoLists = [
@@ -59,6 +60,15 @@ afterEach(() => {
 
 afterAll(() => server.close());
 
+// Define the mock user
+const mockUser = {
+  id: 1,
+  name: "Tests User",
+  email: "testuser@test.com",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
 // Tests
 describe("TodoListsPage Component", () => {
   test("renders the page", () => {
@@ -71,5 +81,19 @@ describe("TodoListsPage Component", () => {
     );
 
     expect(screen.getByText("My TodoLists")).toBeInTheDocument();
+  });
+});
+
+describe("NewListForm Component", () => {
+  test("submitting the form calls the onSubmit function", () => {
+    const mockSubmit = vi.fn();
+
+    render(
+      <AuthProvider>
+        <Router>
+          <NewListForm onSubmit={mockSubmit} />
+        </Router>
+      </AuthProvider>
+    );
   });
 });

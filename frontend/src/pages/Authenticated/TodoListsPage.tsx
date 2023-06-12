@@ -74,6 +74,7 @@ function NewListForm({ onSubmit }: NewListFormProps) {
           onChange={handleListName}
         />
         <button
+          data-testid="create-list"
           type="submit"
           className="mx-2 bg-blue-400 p-3 text-white opacity-90 shadow-lg shadow-blue-500 transition-all duration-150 hover:shadow-lg hover:shadow-blue-500 active:bg-blue-600 active:shadow-lg active:shadow-blue-600"
         >

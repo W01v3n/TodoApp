@@ -8,6 +8,8 @@ import { AuthProvider } from "../../components/Context/Auth/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 
 // Mock server setup
+const apiEndpoint = import.meta.env.VITE_API_BASE_URL;
+
 // Define the mock user
 // const mockUser = {
 //   id: 1,
@@ -62,15 +64,12 @@ const createdList = {
 };
 
 const restHandlers = [
-  rest.get("http://localhost:3000/api/auth/re", (_req, res, ctx) => {
+  rest.get(`${apiEndpoint}/auth/re`, (_req, res, ctx) => {
     return res(ctx.status(200));
   }),
-  rest.post(
-    "http://localhost:3000/api/auth/refresh-token",
-    (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json({ token: "newToken" }));
-    }
-  ),
+  rest.post(`${apiEndpoint}/auth/refresh-token`, (_req, res, ctx) => {
+    return res(ctx.status(200), ctx.json({ token: "newToken" }));
+  }),
 ];
 
 const server = setupServer(...restHandlers);

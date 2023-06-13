@@ -7,6 +7,7 @@ import { MemoryRouter } from "react-router-dom";
 import TestApp from "../TestComponents/TestApp";
 
 // Mock server setup
+const apiEndpoint = import.meta.env.VITE_API_BASE_URL;
 const todoLists = [
   {
     createdAt: new Date(),
@@ -25,32 +26,26 @@ const todoLists = [
 ];
 
 const isAuthRestHandlers = [
-  rest.get("http://localhost:3000/api/auth/re", (_req, res, ctx) => {
+  rest.get(`${apiEndpoint}/auth/re`, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ isAuthenticated: true }));
   }),
 
-  rest.post(
-    "http://localhost:3000/api/auth/refresh-token",
-    (_req, res, ctx) => {
-      return res(ctx.status(200));
-    }
-  ),
-  rest.get("http://localhost:3000/api/lists", (_req, res, ctx) => {
+  rest.post(`${apiEndpoint}/auth/refresh-token`, (_req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+  rest.get(`${apiEndpoint}/lists`, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(todoLists));
   }),
 ];
 
 const isNotAuthRestHandlers = [
-  rest.get("http://localhost:3000/api/auth/re", (_req, res, ctx) => {
+  rest.get(`${apiEndpoint}/auth/re`, (_req, res, ctx) => {
     return res(ctx.status(401), ctx.json({ isAuthenticated: false }));
   }),
 
-  rest.post(
-    "http://localhost:3000/api/auth/refresh-token",
-    (_req, res, ctx) => {
-      return res(ctx.status(401));
-    }
-  ),
+  rest.post(`${apiEndpoint}/auth/refresh-token`, (_req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
 ];
 
 const server = setupServer();

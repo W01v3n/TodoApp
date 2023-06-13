@@ -9,6 +9,8 @@ import { AuthProvider } from "../Context/Auth/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 
 // Mock server setup
+const apiEndpoint = import.meta.env.VITE_API_BASE_URL;
+
 const registeringUser = {
   userId: 1,
   username: "Mr.Tester",
@@ -20,36 +22,30 @@ const registeringUser = {
 };
 
 const restHandlers = [
-  rest.post(
-    "http://localhost:3000/api/users/register",
-    async (_req, res, ctx) => {
-      const { username, email, password } = await _req.json();
-      if (
-        email === "testregister@example.com" &&
-        password === "password123" &&
-        username === "Mr.Tester"
-      ) {
-        return res(ctx.status(201), ctx.json(registeringUser));
-      } else {
-        console.log("ERROR IN REGISTRATION!");
+  rest.post(`${apiEndpoint}/users/register`, async (_req, res, ctx) => {
+    const { username, email, password } = await _req.json();
+    if (
+      email === "testregister@example.com" &&
+      password === "password123" &&
+      username === "Mr.Tester"
+    ) {
+      return res(ctx.status(201), ctx.json(registeringUser));
+    } else {
+      console.log("ERROR IN REGISTRATION!");
 
-        return res(
-          ctx.status(401),
-          ctx.json({ message: "Error in registration." })
-        );
-      }
+      return res(
+        ctx.status(401),
+        ctx.json({ message: "Error in registration." })
+      );
     }
-  ),
-  rest.get("http://localhost:3000/api/auth/re", (_req, res, ctx) => {
+  }),
+  rest.get(`${apiEndpoint}/auth/re`, (_req, res, ctx) => {
     return res(ctx.status(401), ctx.json({ isAuthenticated: false }));
   }),
 
-  rest.post(
-    "http://localhost:3000/api/auth/refresh-token",
-    (_req, res, ctx) => {
-      return res(ctx.status(401));
-    }
-  ),
+  rest.post(`${apiEndpoint}/auth/refresh-token`, (_req, res, ctx) => {
+    return res(ctx.status(401));
+  }),
 ];
 
 const server = setupServer(...restHandlers);

@@ -14,5 +14,3 @@ it("should render the home page", () => {
   const message = screen.queryByText(/Features/i);
   expect(message).toBeVisible();
 });
-
-// vitest.mock("../../services/api.service");

@@ -1,15 +1,16 @@
 // Import the axios library, along with two specific types from it: AxiosError and AxiosRequestConfig.
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
+const apiEndpoint = import.meta.env.VITE_API_BASE_URL;
 // Define a new type that extends the AxiosRequestConfig type. It has an optional property _retry.
 interface AxiosRequestConfigWithRetry extends AxiosRequestConfig {
   _retry?: boolean;
 }
 
 // Create a new axios instance. This instance has some default configuration:
-// it will send requests to "http://localhost:3000/api", and it will include credentials (like cookies) with its requests.
+// it will send requests to `apiEndpoint`, and it will include credentials (like cookies) with its requests.
 const instance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: apiEndpoint,
   withCredentials: true,
 });
 

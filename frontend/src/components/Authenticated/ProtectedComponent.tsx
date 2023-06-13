@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate, RouteProps } from "react-router-dom";
 import { useAuth } from "../Context/Auth/useAuth";
 
@@ -10,14 +10,19 @@ function ProtectedComponent({ component: Component }: ProtectedComponentProps) {
   const { isAuthenticated, isLoading, refreshToken } = useAuth();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       // Try to refresh token before redirecting to /login
-      refreshToken().then(() => {
-        if (!isAuthenticated) {
+      refreshToken()
+        .then(() => {
+          if (!isAuthenticated) {
+            navigate("/login");
+          }
+        })
+        .catch((error) => {
+          console.error("Failed to refresh token: ", error);
           navigate("/login");
-        }
-      });
+        });
     }
   }, [isLoading, isAuthenticated, navigate, refreshToken]);
 

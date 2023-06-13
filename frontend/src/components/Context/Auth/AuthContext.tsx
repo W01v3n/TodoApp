@@ -5,7 +5,7 @@ import { RouteProps } from "react-router-dom";
 import api from "../../../services/api.service";
 
 // Define the structure of a User object.
-interface User {
+export interface User {
   rest?: User;
   id: number;
   name: string;
@@ -16,7 +16,7 @@ interface User {
 
 // Define the structure of the authentication context.
 // This context will hold the current user, a loading state, and methods to log in and log out.
-interface AuthContextData {
+export interface AuthContextData {
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
   setIsAuthenticated: (isAuthenticated: boolean) => void;

@@ -3,12 +3,11 @@ import matchers from "@testing-library/jest-dom/matchers";
 import { expect, test, afterEach, beforeAll, afterAll, vi } from "vitest";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import ProtectedComponent from "./ProtectedComponent";
-import { TodoListsPage } from "../../pages";
-import { AuthProvider } from "../Context/Auth/AuthContext";
-import { BrowserRouter as Router } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
+import TestApp from "../TestComponents/TestApp";
 
 // Mock server setup
+const apiEndpoint = import.meta.env.VITE_API_BASE_URL;
 const todoLists = [
   {
     createdAt: new Date(),
@@ -27,34 +26,25 @@ const todoLists = [
 ];
 
 const isAuthRestHandlers = [
-  rest.get("http://localhost:3000/api/auth/re", (_req, res, ctx) => {
+  rest.get(`${apiEndpoint}/auth/re`, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ isAuthenticated: true }));
   }),
 
-  rest.post(
-    "http://localhost:3000/api/auth/refresh-token",
-    (_req, res, ctx) => {
-      return res(ctx.status(200));
-    }
-  ),
-  rest.get("http://localhost:3000/api/lists", (_req, res, ctx) => {
+  rest.post(`${apiEndpoint}/auth/refresh-token`, (_req, res, ctx) => {
+    return res(ctx.status(200));
+  }),
+  rest.get(`${apiEndpoint}/lists`, (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(todoLists));
   }),
 ];
 
 const isNotAuthRestHandlers = [
-  rest.get("http://localhost:3000/api/auth/re", (_req, res, ctx) => {
+  rest.get(`${apiEndpoint}/auth/re`, (_req, res, ctx) => {
     return res(ctx.status(401), ctx.json({ isAuthenticated: false }));
   }),
 
-  rest.post(
-    "http://localhost:3000/api/auth/refresh-token",
-    (_req, res, ctx) => {
-      return res(ctx.status(401));
-    }
-  ),
-  rest.get("http://localhost:3000/api/lists", (_req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(todoLists));
+  rest.post(`${apiEndpoint}/auth/refresh-token`, (_req, res, ctx) => {
+    return res(ctx.status(401));
   }),
 ];
 
@@ -83,11 +73,9 @@ describe("ProtectedComponent", () => {
   test("renders the protected component when a user IS authenticated", async () => {
     server.use(...isAuthRestHandlers);
     render(
-      <AuthProvider>
-        <Router>
-          <ProtectedComponent component={TodoListsPage} />
-        </Router>
-      </AuthProvider>
+      <MemoryRouter initialEntries={["/lists"]}>
+        <TestApp />
+      </MemoryRouter>
     );
 
     const content = await screen.findByRole("heading", {
@@ -101,11 +89,9 @@ describe("ProtectedComponent", () => {
   test("does not render the protected component when a user IS NOT authenticated", async () => {
     server.use(...isNotAuthRestHandlers);
     render(
-      <AuthProvider>
-        <Router>
-          <ProtectedComponent component={TodoListsPage} />
-        </Router>
-      </AuthProvider>
+      <MemoryRouter initialEntries={["/lists"]}>
+        <TestApp />
+      </MemoryRouter>
     );
 
     await waitFor(() => {
@@ -113,6 +99,8 @@ describe("ProtectedComponent", () => {
         name: "My TodoLists",
       });
       expect(content).not.toBeInTheDocument();
+      const loginEmailLabel = screen.getByLabelText(/Email Address/i);
+      expect(loginEmailLabel).toBeInTheDocument();
     });
   });
 });
